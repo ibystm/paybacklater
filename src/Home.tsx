@@ -10,6 +10,7 @@ import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { Colors } from "./utils/types/color";
 
 const Tab = createBottomTabNavigator();
 
@@ -48,7 +49,7 @@ const Context: FC<P> = (props) => {
 const Settings: FC = () => {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Ionicons name="person-outline" size={24} color="black" />
+      <Ionicons name="person-outline" size={24} color={Colors.Main} />
       <Text>Settings!</Text>
     </View>
   );
@@ -65,13 +66,21 @@ const Home: FC = () => {
 const Container = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName="Home">
+      <Tab.Navigator
+        initialRouteName="Home"
+        tabBarOptions={{
+          activeTintColor: Colors.Main,
+          inactiveTintColor: Colors.Gray7,
+        }}
+      >
         <Tab.Screen
           name="Home"
           component={Home}
           options={{
             tabBarLabel: "Home",
-            tabBarIcon: () => <Entypo name="home" size={24} color="black" />,
+            tabBarIcon: ({ color }) => (
+              <Entypo name="home" size={28} color={color} />
+            ),
           }}
         />
         <Tab.Screen
@@ -79,7 +88,9 @@ const Container = () => {
           component={Settings}
           options={{
             tabBarLabel: "タイムライン",
-            tabBarIcon: () => <Entypo name="list" size={24} color="black" />,
+            tabBarIcon: ({ color }) => (
+              <Entypo name="list" size={28} color={color} />
+            ),
           }}
         />
         <Tab.Screen
@@ -87,8 +98,8 @@ const Container = () => {
           component={Settings}
           options={{
             tabBarLabel: "追加",
-            tabBarIcon: () => (
-              <AntDesign name="pluscircleo" size={24} color="black" />
+            tabBarIcon: ({ color }) => (
+              <AntDesign name="pluscircleo" size={28} color={color} />
             ),
           }}
         />
@@ -97,7 +108,9 @@ const Container = () => {
           component={Settings}
           options={{
             tabBarLabel: "通知",
-            tabBarIcon: () => <Feather name="bell" size={24} color="black" />,
+            tabBarIcon: ({ color }) => (
+              <Feather name="bell" size={28} color={color} />
+            ),
           }}
         />
         <Tab.Screen
@@ -105,8 +118,8 @@ const Container = () => {
           component={Settings}
           options={{
             tabBarLabel: "マイページ",
-            tabBarIcon: () => (
-              <Ionicons name="person-outline" size={24} color="black" />
+            tabBarIcon: ({ color }) => (
+              <Ionicons name="person-outline" size={28} color={color} />
             ),
           }}
         />
