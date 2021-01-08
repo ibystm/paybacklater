@@ -17,8 +17,6 @@ import AddPaymentScreen from "./Screens/AddPaymentScreen";
 import Notification from "./Screens/Notification";
 import MyPage from "./Screens/MyPage";
 
-const Tab = createBottomTabNavigator();
-
 export interface P {
   name: string;
   deleteName: () => void;
@@ -51,14 +49,7 @@ const Context: FC<P> = (props) => {
   );
 };
 
-const Settings: FC = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Ionicons name="person-outline" size={24} color={Colors.Main} />
-      <Text>Settings!</Text>
-    </View>
-  );
-};
+const Tab = createBottomTabNavigator();
 
 const AppContainer = () => {
   return (
