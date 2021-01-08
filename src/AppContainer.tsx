@@ -11,6 +11,11 @@ import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "./utils/types/color";
+import Home from "./Screens/Home";
+import History from "./Screens/History";
+import AddPaymentScreen from "./Screens/AddPaymentScreen";
+import Notification from "./Screens/Notification";
+import MyPage from "./Screens/MyPage";
 
 const Tab = createBottomTabNavigator();
 
@@ -55,15 +60,7 @@ const Settings: FC = () => {
   );
 };
 
-const Home: FC = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Home</Text>
-    </View>
-  );
-};
-
-const Container = () => {
+const AppContainer = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -85,9 +82,9 @@ const Container = () => {
         />
         <Tab.Screen
           name="履歴"
-          component={Settings}
+          component={History}
           options={{
-            tabBarLabel: "タイムライン",
+            tabBarLabel: "履歴",
             tabBarIcon: ({ color }) => (
               <Entypo name="list" size={28} color={color} />
             ),
@@ -95,7 +92,7 @@ const Container = () => {
         />
         <Tab.Screen
           name="追加"
-          component={Settings}
+          component={AddPaymentScreen}
           options={{
             tabBarLabel: "追加",
             tabBarIcon: ({ color }) => (
@@ -105,7 +102,7 @@ const Container = () => {
         />
         <Tab.Screen
           name="通知"
-          component={Settings}
+          component={Notification}
           options={{
             tabBarLabel: "通知",
             tabBarIcon: ({ color }) => (
@@ -115,7 +112,7 @@ const Container = () => {
         />
         <Tab.Screen
           name="マイページ"
-          component={Settings}
+          component={MyPage}
           options={{
             tabBarLabel: "マイページ",
             tabBarIcon: ({ color }) => (
@@ -140,4 +137,4 @@ const mapDispatchToProps = {
   deleteName,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Container);
+export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
