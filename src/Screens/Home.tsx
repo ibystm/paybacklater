@@ -5,6 +5,7 @@ import { Rubik_500Medium } from '@expo-google-fonts/rubik'
 import AppLoading from 'expo-app-loading'
 import { Colors } from '../utils/types/color'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import SwitchSelector from 'react-native-switch-selector'
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 16, backgroundColor: '#ffff' },
@@ -47,7 +48,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
-  payOffButton: { marginTop: 48 }
+  payOffButton: { marginTop: 48 },
+  userSwitch: { marginBottom: 18, justifyContent: 'center', alignItems: 'center' }
 })
 
 const Home: FC = () => {
@@ -61,6 +63,27 @@ const Home: FC = () => {
         <Text style={styles.titleText}>PayBackLater</Text>
       </View>
       <View style={styles.paymentViewBox}>
+        <View style={styles.userSwitch}>
+          <SwitchSelector
+            style={{ width: 160 }}
+            initial={0}
+            onPress={() => {}}
+            textColor={Colors.Secondary}
+            selectedColor="#fff"
+            buttonColor={Colors.Secondary}
+            borderColor={Colors.Secondary}
+            borderRadius={10}
+            animationDuration={300}
+            bold={true}
+            valuePadding={0}
+            hasPadding={true}
+            height={28}
+            options={[
+              { label: 'ごま', value: 'f' },
+              { label: 'やすこ', value: 'm' }
+            ]}
+          />
+        </View>
         <View style={styles.paymentCompleteAttribute}>
           <Text style={styles.previousPaymentComplete}>前回の精算</Text>
           <Text style={styles.previousPaymentComplete}>2020/11/04</Text>
