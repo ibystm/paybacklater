@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useMemo, useState } from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { NunitoSans_900Black_Italic, useFonts } from '@expo-google-fonts/nunito-sans'
 import { Rubik_500Medium } from '@expo-google-fonts/rubik'
@@ -57,6 +57,16 @@ const Home: FC = () => {
     NunitoSans_900Black_Italic,
     Rubik_500Medium
   })
+  const [activeUser, setActiveUser] = useState<boolean>(true)
+  const switchOptions = useMemo(
+    () => [
+      { label: 'ごま', value: 'f' },
+      { label: 'やすこ', value: 'm' }
+    ],
+    []
+  )
+  useEffect(() => {}, [])
+
   return fontsLoaded ? (
     <View style={styles.container}>
       <View style={styles.titleAreaContainer}>
@@ -67,7 +77,9 @@ const Home: FC = () => {
           <SwitchSelector
             style={{ width: 160 }}
             initial={0}
-            onPress={() => {}}
+            onPress={() => {
+              setActiveUser(!activeUser)
+            }}
             textColor={Colors.Secondary}
             selectedColor="#fff"
             buttonColor={Colors.Secondary}
@@ -78,20 +90,17 @@ const Home: FC = () => {
             valuePadding={0}
             hasPadding={true}
             height={28}
-            options={[
-              { label: 'ごま', value: 'f' },
-              { label: 'やすこ', value: 'm' }
-            ]}
+            options={switchOptions}
           />
         </View>
         <View style={styles.paymentCompleteAttribute}>
           <Text style={styles.previousPaymentComplete}>前回の精算</Text>
           <Text style={styles.previousPaymentComplete}>2020/11/04</Text>
         </View>
-        <Text style={styles.totalAmount}>ごまさんに払う金額</Text>
+        <Text style={styles.totalAmount}>{activeUser ? 'ごま' : 'やすこ'}さんに払う金額</Text>
         <View style={styles.paymentCompleteAttribute}>
           <Text style={styles.totalAmountNumber}>¥</Text>
-          <Text style={styles.totalAmountNumber}>5,000</Text>
+          <Text style={styles.totalAmountNumber}>{activeUser ? 6000 : 2000}</Text>
         </View>
       </View>
       <TouchableOpacity style={styles.payOffButton}>
