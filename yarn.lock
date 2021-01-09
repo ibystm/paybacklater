@@ -5016,6 +5016,13 @@ react-native-screens@~2.15.0:
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.15.0.tgz#9b97c1881c4fcdf304bf363f0013225901625f44"
   integrity sha512-qTSQPy0WKHtlb8xt5gY0Gt6sdvfQUQAnFSqgsggW9UEvySbkHzpqOrOYNA79Ca8oXO0dCFwp6X8buIiDefa7+Q==
 
+react-native-switch-selector@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-switch-selector/-/react-native-switch-selector-2.0.6.tgz#e21cf77b8c8596a83e455b54b06f60a1267e26c3"
+  integrity sha512-noBFzh5QMf3Jp/B+kg0uLmbBPID5y9bhTpZ577ZabV3p5eErSTdYSmZHqvn0XCXPraBUDKAC73/0L4ttMv+rOQ==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-vector-icons@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-7.1.0.tgz#145487d617b2a81d395d2cf64e6e065fcab3a454"
