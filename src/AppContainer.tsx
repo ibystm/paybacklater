@@ -5,8 +5,9 @@ import { connect } from 'react-redux'
 import { setName, deleteName } from './redux/redux'
 import { store } from './redux/redux'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import 'react-native-gesture-handler'
+import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
-import { Entypo } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 import { Ionicons } from '@expo/vector-icons'
@@ -16,6 +17,7 @@ import History from './Screens/History'
 import AddPaymentScreen from './Screens/AddPaymentScreen'
 import Notification from './Screens/Notification'
 import MyPage from './Screens/MyPage'
+import AddPaymentStacks from './Screens/stacks/AddPaymentStacks'
 
 export interface P {
   name: string
@@ -74,7 +76,7 @@ const AppContainer = () => {
         />
         <Tab.Screen
           name="追加"
-          component={AddPaymentScreen}
+          component={AddPaymentStacks}
           options={{
             tabBarLabel: '追加',
             tabBarIcon: ({ color }) => <AntDesign name="pluscircleo" size={28} color={color} />

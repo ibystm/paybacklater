@@ -1,11 +1,13 @@
 import React, { FC, useEffect, useMemo, useState } from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Modal } from 'react-native'
 import { NunitoSans_900Black_Italic, useFonts } from '@expo-google-fonts/nunito-sans'
 import { Rubik_500Medium } from '@expo-google-fonts/rubik'
 import AppLoading from 'expo-app-loading'
 import { Colors } from '../utils/types/color'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import SwitchSelector from 'react-native-switch-selector'
+import { UsersService } from '../services/usersService'
+import PayOffButton from '../components/icons/PayOffButton'
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 16, backgroundColor: '#ffff' },
@@ -58,6 +60,7 @@ const Home: FC = () => {
     Rubik_500Medium
   })
   const [activeUser, setActiveUser] = useState<boolean>(true)
+  const [user, setUser] = useState<any>()
   const switchOptions = useMemo(
     () => [
       { label: 'ごま', value: 'f' },
@@ -65,7 +68,12 @@ const Home: FC = () => {
     ],
     []
   )
-  useEffect(() => {}, [])
+
+  useEffect(() => {
+    UsersService.getUsersTotalDebts('Oe6XKXl31y9TFvMdMADo').then((res) => {
+      setUser(res)
+    })
+  }, [activeUser])
 
   return fontsLoaded ? (
     <View style={styles.container}>
@@ -97,14 +105,14 @@ const Home: FC = () => {
           <Text style={styles.previousPaymentComplete}>前回の精算</Text>
           <Text style={styles.previousPaymentComplete}>2020/11/04</Text>
         </View>
-        <Text style={styles.totalAmount}>{activeUser ? 'ごま' : 'やすこ'}さんに払う金額</Text>
+        <Text style={styles.totalAmount}>{activeUser ? user?.name : 'やすこ'}さんに払う金額</Text>
         <View style={styles.paymentCompleteAttribute}>
           <Text style={styles.totalAmountNumber}>¥</Text>
           <Text style={styles.totalAmountNumber}>{activeUser ? 6000 : 2000}</Text>
         </View>
       </View>
       <TouchableOpacity style={styles.payOffButton}>
-        <Image source={require('../../assets/payOff.png')} />
+        <PayOffButton />
       </TouchableOpacity>
     </View>
   ) : (
