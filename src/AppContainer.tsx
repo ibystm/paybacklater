@@ -7,7 +7,7 @@ import { store } from './redux/redux'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import 'react-native-gesture-handler'
 import { createStackNavigator } from '@react-navigation/stack'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 import { Ionicons } from '@expo/vector-icons'
@@ -45,6 +45,8 @@ const Context: FC<P> = (props) => {
     </View>
   )
 }
+
+const CreatePlaceholder = () => <View style={{ flex: 1, backgroundColor: '#fff' }} />
 
 const Tab = createBottomTabNavigator()
 

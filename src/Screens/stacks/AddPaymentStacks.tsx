@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import Home from '../Home'
 import AddPaymentScreen from '../AddPaymentScreen'
 
@@ -7,7 +7,7 @@ const AddPaymentStacks = () => {
   const Stack = createStackNavigator()
 
   return (
-    <Stack.Navigator initialRouteName="AddPayment">
+    <Stack.Navigator initialRouteName="AddPayment" mode="modal">
       <Stack.Screen
         name="Home"
         component={Home}

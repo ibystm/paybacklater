@@ -8,6 +8,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import SwitchSelector from 'react-native-switch-selector'
 import { UsersService } from '../services/usersService'
 import PayOffButton from '../components/icons/PayOffButton'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 16, backgroundColor: '#ffff' },
@@ -59,6 +60,7 @@ const Home: FC = () => {
     NunitoSans_900Black_Italic,
     Rubik_500Medium
   })
+  const [isLoading, setIsLoading] = useState<Boolean>(true)
   const [activeUser, setActiveUser] = useState<boolean>(true)
   const [user, setUser] = useState<any>()
   const switchOptions = useMemo(
@@ -75,7 +77,7 @@ const Home: FC = () => {
     })
   }, [activeUser])
 
-  return fontsLoaded ? (
+  return fontsLoaded && isLoading ? (
     <View style={styles.container}>
       <View style={styles.titleAreaContainer}>
         <Text style={styles.titleText}>PayBackLater</Text>
@@ -116,7 +118,7 @@ const Home: FC = () => {
       </TouchableOpacity>
     </View>
   ) : (
-    <AppLoading />
+    <></>
   )
 }
 
