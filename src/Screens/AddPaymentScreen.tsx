@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from 'react'
-import { View, Text, StyleSheet, SafeAreaView, Modal } from 'react-native'
-import CloseButton from '../components/icons/CloseButton'
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
-import { Colors } from '../utils/types/color'
-import { useNavigation } from '@react-navigation/native'
 import { Rubik_500Medium, useFonts } from '@expo-google-fonts/rubik'
+import { useNavigation } from '@react-navigation/native'
+import React, { useCallback } from 'react'
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
+import CloseButton from '../components/icons/CloseButton'
+import MyKeyboard from '../components/icons/KeyboardPads'
+import { Colors } from '../utils/types/color'
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
@@ -47,7 +48,7 @@ const AddPaymentScreen = () => {
           <Text style={styles.paymentNumber}>5000</Text>
         </View>
         <View style={styles.amountArea}>
-          <Text style={styles.paymentUserText}>支払った人</Text>
+          <Text style={styles.paymentUserText}>支払った人*</Text>
           <Text style={styles.paymentNumber}>やすこ</Text>
         </View>
         <View style={styles.amountArea}>
@@ -66,6 +67,7 @@ const AddPaymentScreen = () => {
             <Text style={{ color: Colors.Gray8, fontFamily: 'System', fontSize: 16 }}>設定{' > '}</Text>
           </TouchableOpacity>
         </View>
+        <MyKeyboard />
       </View>
     </SafeAreaView>
   ) : (
