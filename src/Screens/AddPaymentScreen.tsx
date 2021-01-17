@@ -3,13 +3,14 @@ import { useNavigation } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
+import BottomNextButton from '../components/BottomNextButton'
 import CloseButton from '../components/icons/CloseButton'
 import MyKeyboard from '../components/icons/KeyboardPads'
 import { Colors } from '../utils/types/color'
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  areaWrapper: { paddingTop: 24, paddingHorizontal: 32 },
+  container: { flex: 0.5, backgroundColor: '#fff' },
+  areaWrapper: { flex: 7, paddingTop: 24, paddingHorizontal: 32, backgroundColor: '#fff' },
   upperArea: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -34,7 +35,8 @@ const AddPaymentScreen = () => {
   }, [])
 
   return fontsLoaded ? (
-    <SafeAreaView style={styles.container}>
+    <View style={{ flex: 1 }}>
+      <SafeAreaView style={styles.container} />
       <View style={styles.areaWrapper}>
         <View style={styles.upperArea}>
           <View />
@@ -67,9 +69,12 @@ const AddPaymentScreen = () => {
             <Text style={{ color: Colors.Gray8, fontFamily: 'System', fontSize: 16 }}>設定{' > '}</Text>
           </TouchableOpacity>
         </View>
-        <MyKeyboard />
       </View>
-    </SafeAreaView>
+      <View style={{ flex: 7 }}>
+        <MyKeyboard />
+        <BottomNextButton />
+      </View>
+    </View>
   ) : (
     <></>
   )

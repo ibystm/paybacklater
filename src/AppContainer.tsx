@@ -1,23 +1,16 @@
 // home.js
-import React, { Component, FC } from 'react'
-import { View, Text, Button } from 'react-native'
-import { connect } from 'react-redux'
-import { setName, deleteName } from './redux/redux'
-import { store } from './redux/redux'
+import { AntDesign, Feather, Ionicons } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import React, { FC } from 'react'
+import { Button, Text, View } from 'react-native'
 import 'react-native-gesture-handler'
-import { createStackNavigator } from '@react-navigation/stack'
-import { NavigationContainer, useNavigation } from '@react-navigation/native'
-import { AntDesign } from '@expo/vector-icons'
-import { Feather } from '@expo/vector-icons'
-import { Ionicons } from '@expo/vector-icons'
-import { Colors } from './utils/types/color'
-import Home from './Screens/Home'
+import { connect } from 'react-redux'
+import { deleteName, setName, store } from './redux/redux'
 import History from './Screens/History'
-import AddPaymentScreen from './Screens/AddPaymentScreen'
-import Notification from './Screens/Notification'
+import Home from './Screens/Home'
 import MyPage from './Screens/MyPage'
-import AddPaymentStacks from './Screens/stacks/AddPaymentStacks'
+import Notification from './Screens/Notification'
+import { Colors } from './utils/types/color'
 
 export interface P {
   name: string
@@ -46,62 +39,66 @@ const Context: FC<P> = (props) => {
   )
 }
 
-const CreatePlaceholder = () => <View style={{ flex: 1, backgroundColor: '#fff' }} />
+const dummyComponent = () => null
 
 const Tab = createBottomTabNavigator()
 
 const AppContainer = () => {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="Home"
-        tabBarOptions={{
-          activeTintColor: Colors.Main,
-          inactiveTintColor: Colors.Gray7
+    <Tab.Navigator
+      initialRouteName="Home"
+      tabBarOptions={{
+        activeTintColor: Colors.Main,
+        inactiveTintColor: Colors.Gray7
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color }) => <AntDesign name="home" size={28} color={color} />
         }}
-      >
-        <Tab.Screen
-          name="Home"
-          component={Home}
-          options={{
-            tabBarLabel: 'Home',
-            tabBarIcon: ({ color }) => <AntDesign name="home" size={28} color={color} />
-          }}
-        />
-        <Tab.Screen
-          name="履歴"
-          component={History}
-          options={{
-            tabBarLabel: '履歴',
-            tabBarIcon: ({ color }) => <Feather name="book-open" size={28} color={color} />
-          }}
-        />
-        <Tab.Screen
-          name="追加"
-          component={AddPaymentStacks}
-          options={{
-            tabBarLabel: '追加',
-            tabBarIcon: ({ color }) => <AntDesign name="pluscircleo" size={28} color={color} />
-          }}
-        />
-        <Tab.Screen
-          name="通知"
-          component={Notification}
-          options={{
-            tabBarLabel: '通知',
-            tabBarIcon: ({ color }) => <Feather name="bell" size={28} color={color} />
-          }}
-        />
-        <Tab.Screen
-          name="マイページ"
-          component={MyPage}
-          options={{
-            tabBarLabel: 'マイページ',
-            tabBarIcon: ({ color }) => <Ionicons name="person-outline" size={28} color={color} />
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+      />
+      <Tab.Screen
+        name="履歴"
+        component={History}
+        options={{
+          tabBarLabel: '履歴',
+          tabBarIcon: ({ color }) => <Feather name="book-open" size={28} color={color} />
+        }}
+      />
+      <Tab.Screen
+        name="追加"
+        component={dummyComponent}
+        options={{
+          tabBarLabel: '追加',
+          tabBarIcon: ({ color }) => <AntDesign name="pluscircleo" size={28} color={color} />
+        }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault()
+            navigation.navigate('AddPaymentScreen')
+          }
+        })}
+      />
+      <Tab.Screen
+        name="通知"
+        component={Notification}
+        options={{
+          tabBarLabel: '通知',
+          tabBarIcon: ({ color }) => <Feather name="bell" size={28} color={color} />
+        }}
+      />
+      <Tab.Screen
+        name="マイページ"
+        component={MyPage}
+        options={{
+          tabBarLabel: 'マイページ',
+          tabBarIcon: ({ color }) => <Ionicons name="person-outline" size={28} color={color} />
+        }}
+      />
+    </Tab.Navigator>
   )
 }
 

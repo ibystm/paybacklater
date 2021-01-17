@@ -1,8 +1,9 @@
 import React, { FC } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Colors } from '../../utils/types/color'
 
 type P = {}
-// TODO Functional componentに直す
+
 const MyKeyboard: FC<P> = () => {
   const onPress1 = ({}) => {
     // insertText(.props.tag, '1')
@@ -53,21 +54,21 @@ const MyKeyboard: FC<P> = () => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={{ flexDirection: 'row' }}>
         <View style={styles.button}>
           <TouchableOpacity onPress={onPress1}>
-            <Text style={styles.buttonLabel}>1</Text>
+            <Text style={styles.buttonLabel}>7</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.button}>
           <TouchableOpacity onPress={onPress2}>
-            <Text style={styles.buttonLabel}>2</Text>
+            <Text style={styles.buttonLabel}>8</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.button}>
           <TouchableOpacity onPress={onPress3}>
-            <Text style={styles.buttonLabel}>3</Text>
+            <Text style={styles.buttonLabel}>9</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -91,34 +92,25 @@ const MyKeyboard: FC<P> = () => {
       <View style={{ flexDirection: 'row' }}>
         <View style={styles.button}>
           <TouchableOpacity onPress={onPress7}>
-            <Text style={styles.buttonLabel}>7</Text>
+            <Text style={styles.buttonLabel}>1</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.button}>
           <TouchableOpacity onPress={onPress8}>
-            <Text style={styles.buttonLabel}>8</Text>
+            <Text style={styles.buttonLabel}>2</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.button}>
           <TouchableOpacity onPress={onPress9}>
-            <Text style={styles.buttonLabel}>9</Text>
+            <Text style={styles.buttonLabel}>3</Text>
           </TouchableOpacity>
         </View>
       </View>
       <View style={{ flexDirection: 'row' }}>
-        <View style={styles.button}>
-          <TouchableOpacity onPress={onPressBackSpace}>
-            <Text style={styles.buttonLabel}>&larr;</Text>
-          </TouchableOpacity>
-        </View>
+        <View style={styles.button} />
         <View style={styles.button}>
           <TouchableOpacity onPress={onPress0}>
             <Text style={styles.buttonLabel}>0</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity onPress={onPressHideKeyboard}>
-            <Text style={styles.buttonLabel}>&crarr;</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -130,10 +122,22 @@ export default MyKeyboard
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    flex: 2,
+    backgroundColor: '#fff',
+    borderBottomWidth: 0,
+    width: '100%',
+    height: '100%',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+    shadowRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: -10
+    },
+    shadowColor: '#000000',
+    shadowOpacity: 0.1
   },
   input: {
     backgroundColor: '#ffffff',
@@ -143,15 +147,14 @@ const styles = StyleSheet.create({
     fontSize: 19
   },
   buttonLabel: {
-    borderWidth: 0.5,
-    borderColor: '#d6d7da',
     padding: 10,
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 13,
     paddingBottom: 13,
-    fontSize: 20
+    fontSize: 24,
+    color: Colors.Main
   },
   button: {
     width: '33.333333333%'
