@@ -1,6 +1,6 @@
 import { Rubik_500Medium, useFonts } from '@expo-google-fonts/rubik'
 import { useNavigation } from '@react-navigation/native'
-import React, { useCallback } from 'react'
+import React, { ReactNode, useCallback, useMemo, useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import BottomNextButton from '../components/BottomNextButton'
@@ -21,19 +21,55 @@ const styles = StyleSheet.create({
   amountArea: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16, height: 32 },
   paymentText: { fontSize: 16, fontWeight: '500', color: Colors.Main },
   paymentNumber: { color: Colors.Gray8, fontSize: 26, lineHeight: 32, fontFamily: 'Rubik_500Medium' },
-  paymentUserText: { fontSize: 16, color: Colors.Gray4 }
+  paymentUserText: { fontSize: 16, color: Colors.Gray4 },
+  keyboardAreaContainer: {
+    flex: 7,
+    backgroundColor: '#fff',
+    borderBottomWidth: 0,
+    width: '100%',
+    height: '100%',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingHorizontal: 32,
+    paddingTop: 16,
+    shadowRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: -10
+    },
+    shadowColor: '#000000',
+    shadowOpacity: 0.1,
+    alignItems: 'center'
+  }
 })
 
 const AddPaymentScreen = () => {
   let [fontsLoaded] = useFonts({
     Rubik_500Medium
   })
+  const [currentScreenNumber, setCurrentScreenNumber] = useState<number>(0)
+  // 入力内容を保持
+  const [inputState, setInputState] = useState<{}>()
 
   const navigation = useNavigation()
   const goHome = useCallback(() => {
     navigation.goBack()
   }, [])
 
+  const renderScreen: ReactNode = useMemo(() => {
+    switch (currentScreenNumber) {
+      case 0:
+        return <MyKeyboard />
+      case 1:
+        return <Text>こんちは</Text>
+      default:
+        return <></>
+    }
+  }, [currentScreenNumber])
+
+  const nextPage = useCallback(() => {
+    setCurrentScreenNumber((c) => c + 1)
+  }, [])
   return fontsLoaded ? (
     <View style={{ flex: 1 }}>
       <SafeAreaView style={styles.container} />
@@ -70,9 +106,9 @@ const AddPaymentScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{ flex: 7 }}>
-        <MyKeyboard />
-        <BottomNextButton />
+      <View style={styles.keyboardAreaContainer}>
+        {renderScreen}
+        <BottomNextButton nextScreen={nextPage} />
       </View>
     </View>
   ) : (

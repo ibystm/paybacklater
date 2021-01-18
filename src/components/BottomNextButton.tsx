@@ -1,22 +1,27 @@
-import React from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import React, { FC } from 'react'
+import { Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { Colors } from '../utils/types/color'
 
-const BottomNextButton = () => {
+interface P {
+  nextScreen: () => void
+}
+const BottomNextButton: FC<P> = (props) => {
+  const { nextScreen } = props
   return (
-    <TouchableOpacity style={styles.nextButton}>
+    <TouchableOpacity style={styles.nextButton} onPress={nextScreen}>
       <Text style={styles.nextButtonText}>次へ</Text>
     </TouchableOpacity>
   )
 }
+const windowWidth = Dimensions.get('window').width
 
 export default BottomNextButton
 
 const styles = StyleSheet.create({
   nextButton: {
     flex: 0.5,
-    width: '100%',
-    height: 64,
+    width: windowWidth,
+    height: 72,
     position: 'absolute',
     bottom: 0,
     backgroundColor: Colors.Main,

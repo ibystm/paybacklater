@@ -5,48 +5,48 @@ import { Colors } from '../../utils/types/color'
 type P = {}
 
 const MyKeyboard: FC<P> = () => {
-  const onPress1 = ({}) => {
-    // insertText(.props.tag, '1')
+  const onPress1 = (): string => {
+    return ''
   }
 
-  const onPress2 = () => {
-    // insertText(.props.tag, '2')
+  const onPress2 = (): string => {
+    return ''
   }
 
-  const onPress3 = () => {
-    // insertText(.props.tag, '3')
+  const onPress3 = (): string => {
+    return ''
   }
 
-  const onPress4 = () => {
-    // insertText(.props.tag, '4')
+  const onPress4 = (): string => {
+    return ''
   }
 
-  const onPress5 = () => {
-    // insertText(.props.tag, '5')
+  const onPress5 = (): string => {
+    return ''
   }
 
-  const onPress6 = () => {
-    // insertText(.props.tag, '6')
+  const onPress6 = (): string => {
+    return ''
   }
 
-  const onPress7 = () => {
-    // insertText(.props.tag, '7')
+  const onPress7 = (): string => {
+    return ''
   }
 
-  const onPress8 = () => {
-    // insertText(.props.tag, '8')
+  const onPress8 = (): string => {
+    return ''
   }
 
-  const onPress9 = () => {
-    // insertText(.props.tag, '9')
+  const onPress9 = (): string => {
+    return ''
   }
 
-  const onPressBackSpace = () => {
-    // backSpace(.props.tag)
+  const onPressBackSpace = (): string => {
+    return ''
   }
 
-  const onPress0 = () => {
-    // insertText(.props.tag, '0')
+  const onPress0 = (): string => {
+    return ''
   }
 
   const onPressHideKeyboard = () => {
@@ -113,6 +113,11 @@ const MyKeyboard: FC<P> = () => {
             <Text style={styles.buttonLabel}>0</Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.button}>
+          <TouchableOpacity onPress={() => {}}>
+            <Text style={styles.buttonLabel}>C</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   )
@@ -123,21 +128,8 @@ export default MyKeyboard
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    backgroundColor: '#fff',
-    borderBottomWidth: 0,
     width: '100%',
-    height: '100%',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    shadowRadius: 10,
-    shadowOffset: {
-      width: 0,
-      height: -10
-    },
-    shadowColor: '#000000',
-    shadowOpacity: 0.1
+    alignItems: 'center'
   },
   input: {
     backgroundColor: '#ffffff',
