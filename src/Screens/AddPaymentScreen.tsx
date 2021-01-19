@@ -2,7 +2,7 @@ import { Rubik_500Medium, useFonts } from '@expo-google-fonts/rubik'
 import { useNavigation } from '@react-navigation/native'
 import React, { ReactNode, useCallback, useMemo, useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, TextStyle, View } from 'react-native'
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
+import { TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import {
   Category,
   FixedCostSettings
@@ -10,6 +10,7 @@ import {
 import BottomNextButton from '../components/BottomNextButton'
 import CloseButton from '../components/icons/CloseButton'
 import MyKeyboard from '../components/icons/KeyboardPads'
+import SelectPaymentUser from '../components/SelectPaymentUser'
 import { Colors } from '../utils/types/color'
 
 const styles = StyleSheet.create({
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
   closeButton: { height: 24 },
   amountArea: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16, height: 32 },
   paymentText: { fontSize: 16, fontWeight: '500', color: Colors.Main },
-  paymentNumber: { color: Colors.Gray8, fontSize: 26, lineHeight: 32, fontFamily: 'Rubik_500Medium' },
+  paymentNumber: { color: Colors.Gray8, fontSize: 24, lineHeight: 32, fontFamily: 'Rubik_500Medium', paddingRight: 8 },
   paymentUserText: { fontSize: 16, color: Colors.Gray4, fontWeight: '500' },
   keyboardAreaContainer: {
     flex: 7,
@@ -95,7 +96,10 @@ const AddPaymentScreen = () => {
       case CurrentScreenDef.KeyBoard:
         return <MyKeyboard state={inputState} setState={setInputState} />
       case CurrentScreenDef.SelectPaymentUser:
-        return <Text>こんちは</Text>
+        return <SelectPaymentUser state={inputState} setState={setInputState} />
+      case CurrentScreenDef.SelectCategory:
+      case CurrentScreenDef.Memo:
+      case CurrentScreenDef.AddFixedCost:
       default:
         return <></>
     }
@@ -107,6 +111,9 @@ const AddPaymentScreen = () => {
         return setCurrentScreen(CurrentScreenDef.SelectPaymentUser)
       case CurrentScreenDef.SelectPaymentUser:
         return setCurrentScreen(CurrentScreenDef.SelectCategory)
+      case CurrentScreenDef.SelectCategory:
+      case CurrentScreenDef.Memo:
+      case CurrentScreenDef.AddFixedCost:
       default:
         return
     }
@@ -122,22 +129,28 @@ const AddPaymentScreen = () => {
             <CloseButton />
           </TouchableOpacity>
         </View>
-        <View style={styles.amountArea}>
+        <TouchableWithoutFeedback style={styles.amountArea} onPress={() => setCurrentScreen(CurrentScreenDef.KeyBoard)}>
           <Text style={[styles.paymentText, getTextStyles(CurrentScreenDef.KeyBoard == currentScreen)]}>金額*</Text>
           <TextInput
             value={inputState.amount}
             onChangeText={() => {}}
-            onFocus={(e) => {}}
+            // onKeyPress={() => setCurrentScreen(CurrentScreenDef.KeyBoard)}
             showSoftInputOnFocus={false} // keyboardをoffるprops
             editable={false} // keyboardをoffるprops
             style={styles.paymentNumber}
           />
-        </View>
+        </TouchableWithoutFeedback>
         <View style={styles.amountArea}>
           <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.SelectPaymentUser === currentScreen)]}>
             支払った人*
           </Text>
-          <Text style={styles.paymentNumber}>やすこ</Text>
+          <TextInput
+            value={inputState.paymentUser}
+            onChangeText={() => {}}
+            showSoftInputOnFocus={false} // keyboardをoffるprops
+            // editable={false} // keyboardをoffるprops
+            style={styles.paymentNumber}
+          />
         </View>
         <View style={styles.amountArea}>
           <Text style={styles.paymentUserText}>カテゴリ</Text>

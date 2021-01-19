@@ -2,6 +2,7 @@ export enum Colors {
   Main = '#8851DB',
   Secondary = '#187CDF',
   Secondary2 = '#D43293',
+  white = '#fff',
   Gray1 = '#FCFCFC',
   Gray2 = '#EAEAEA',
   Gray3 = '#DEDEDE',
