@@ -1,8 +1,12 @@
 import { Rubik_500Medium, useFonts } from '@expo-google-fonts/rubik'
 import { useNavigation } from '@react-navigation/native'
 import React, { ReactNode, useCallback, useMemo, useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, TextStyle, View } from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
+import {
+  Category,
+  FixedCostSettings
+} from '../../../payment-builder/functions/src/firestore/types/firestoreUserPayments'
 import BottomNextButton from '../components/BottomNextButton'
 import CloseButton from '../components/icons/CloseButton'
 import MyKeyboard from '../components/icons/KeyboardPads'
@@ -21,7 +25,7 @@ const styles = StyleSheet.create({
   amountArea: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16, height: 32 },
   paymentText: { fontSize: 16, fontWeight: '500', color: Colors.Main },
   paymentNumber: { color: Colors.Gray8, fontSize: 26, lineHeight: 32, fontFamily: 'Rubik_500Medium' },
-  paymentUserText: { fontSize: 16, color: Colors.Gray4 },
+  paymentUserText: { fontSize: 16, color: Colors.Gray4, fontWeight: '500' },
   keyboardAreaContainer: {
     flex: 7,
     backgroundColor: '#fff',
@@ -43,13 +47,43 @@ const styles = StyleSheet.create({
   }
 })
 
+export enum CurrentScreenDef {
+  KeyBoard = 'KeyBoard',
+  SelectPaymentUser = 'SelectPaymentUser',
+  SelectCategory = 'SelectCategory',
+  Memo = 'Memo',
+  AddFixedCost = 'AddFixedCost'
+}
+
+export type InputState = {
+  amount: string
+  paymentUser: string
+  category: Category
+  memo: string
+  fixedCostSetting: FixedCostSettings
+}
+
+const initialInputState: InputState = {
+  amount: '0',
+  paymentUser: '',
+  category: 'food',
+  memo: '',
+  fixedCostSetting: 'none'
+}
+
+const getTextStyles = (isAreaFocused: boolean): TextStyle => {
+  return {
+    color: isAreaFocused ? Colors.Main : Colors.Gray8
+  }
+}
+
 const AddPaymentScreen = () => {
   let [fontsLoaded] = useFonts({
     Rubik_500Medium
   })
-  const [currentScreenNumber, setCurrentScreenNumber] = useState<number>(0)
+  const [currentScreen, setCurrentScreen] = useState<CurrentScreenDef>(CurrentScreenDef.KeyBoard)
   // 入力内容を保持
-  const [inputState, setInputState] = useState<{}>()
+  const [inputState, setInputState] = useState<InputState>(initialInputState)
 
   const navigation = useNavigation()
   const goHome = useCallback(() => {
@@ -57,18 +91,25 @@ const AddPaymentScreen = () => {
   }, [])
 
   const renderScreen: ReactNode = useMemo(() => {
-    switch (currentScreenNumber) {
-      case 0:
-        return <MyKeyboard />
-      case 1:
+    switch (currentScreen) {
+      case CurrentScreenDef.KeyBoard:
+        return <MyKeyboard state={inputState} setState={setInputState} />
+      case CurrentScreenDef.SelectPaymentUser:
         return <Text>こんちは</Text>
       default:
         return <></>
     }
-  }, [currentScreenNumber])
+  }, [currentScreen])
 
   const nextPage = useCallback(() => {
-    setCurrentScreenNumber((c) => c + 1)
+    switch (currentScreen) {
+      case CurrentScreenDef.KeyBoard:
+        return setCurrentScreen(CurrentScreenDef.SelectPaymentUser)
+      case CurrentScreenDef.SelectPaymentUser:
+        return setCurrentScreen(CurrentScreenDef.SelectCategory)
+      default:
+        return
+    }
   }, [])
   return fontsLoaded ? (
     <View style={{ flex: 1 }}>
@@ -82,11 +123,20 @@ const AddPaymentScreen = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.amountArea}>
-          <Text style={styles.paymentText}>金額*</Text>
-          <Text style={styles.paymentNumber}>5000</Text>
+          <Text style={[styles.paymentText, getTextStyles(CurrentScreenDef.KeyBoard == currentScreen)]}>金額*</Text>
+          <TextInput
+            value={inputState.amount}
+            onChangeText={() => {}}
+            onFocus={(e) => {}}
+            showSoftInputOnFocus={false} // keyboardをoffるprops
+            editable={false} // keyboardをoffるprops
+            style={styles.paymentNumber}
+          />
         </View>
         <View style={styles.amountArea}>
-          <Text style={styles.paymentUserText}>支払った人*</Text>
+          <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.SelectPaymentUser === currentScreen)]}>
+            支払った人*
+          </Text>
           <Text style={styles.paymentNumber}>やすこ</Text>
         </View>
         <View style={styles.amountArea}>
