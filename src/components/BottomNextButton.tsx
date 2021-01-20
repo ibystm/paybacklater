@@ -1,14 +1,24 @@
 import React, { FC } from 'react'
-import { Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { Dimensions, StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
 import { Colors } from '../utils/types/color'
 
 interface P {
   nextScreen: () => void
+  disabled: boolean
 }
+
+const getButtonColorStyle = (disabled: boolean): StyleProp<ViewStyle> => ({
+  opacity: disabled ? 0.4 : 1
+})
+
 const BottomNextButton: FC<P> = (props) => {
-  const { nextScreen } = props
+  const { nextScreen, disabled } = props
   return (
-    <TouchableOpacity style={styles.nextButton} onPress={nextScreen}>
+    <TouchableOpacity
+      style={[styles.nextButton, getButtonColorStyle(disabled)]}
+      onPress={nextScreen}
+      disabled={disabled}
+    >
       <Text style={styles.nextButtonText}>次へ</Text>
     </TouchableOpacity>
   )

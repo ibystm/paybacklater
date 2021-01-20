@@ -122,6 +122,15 @@ const AddPaymentScreen = () => {
         return
     }
   }, [currentScreen])
+
+  const disabled = useMemo(() => {
+    switch (currentScreen) {
+      case CurrentScreenDef.KeyBoard:
+        return inputState.amount === '0' || inputState.amount === ''
+      default:
+        return false
+    }
+  }, [currentScreen, inputState.amount])
   return fontsLoaded ? (
     <View style={{ flex: 1 }}>
       <SafeAreaView style={styles.container} />
@@ -177,7 +186,7 @@ const AddPaymentScreen = () => {
       </View>
       <View style={styles.keyboardAreaContainer}>
         {renderScreen}
-        <BottomNextButton nextScreen={nextPage} />
+        <BottomNextButton nextScreen={nextPage} disabled={disabled} />
       </View>
     </View>
   ) : (
