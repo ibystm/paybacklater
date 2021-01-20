@@ -8,6 +8,7 @@ import {
   FixedCostSettings
 } from '../../../payment-builder/functions/src/firestore/types/firestoreUserPayments'
 import BottomNextButton from '../components/BottomNextButton'
+import CategoryBoard from '../components/CategoryBoard'
 import CloseButton from '../components/icons/CloseButton'
 import MyKeyboard from '../components/icons/KeyboardPads'
 import SelectPaymentUser from '../components/SelectPaymentUser'
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   amountArea: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16, height: 32 },
   paymentText: { fontSize: 16, fontWeight: '500', color: Colors.Main },
   paymentNumber: { color: Colors.Gray8, fontSize: 24, lineHeight: 32, fontFamily: 'Rubik_500Medium', paddingRight: 8 },
-  paymentUserText: { fontSize: 16, color: Colors.Gray4, fontWeight: '500' },
+  paymentUserText: { fontSize: 16, color: Colors.Gray8, fontWeight: '500' },
   keyboardAreaContainer: {
     flex: 7,
     backgroundColor: '#fff',
@@ -98,12 +99,15 @@ const AddPaymentScreen = () => {
       case CurrentScreenDef.SelectPaymentUser:
         return <SelectPaymentUser state={inputState} setState={setInputState} />
       case CurrentScreenDef.SelectCategory:
+        return <CategoryBoard state={inputState} setState={setInputState} />
       case CurrentScreenDef.Memo:
       case CurrentScreenDef.AddFixedCost:
       default:
         return <></>
     }
   }, [currentScreen])
+
+  console.log('#######3inputState', inputState)
 
   const nextPage = useCallback(() => {
     switch (currentScreen) {
@@ -117,7 +121,7 @@ const AddPaymentScreen = () => {
       default:
         return
     }
-  }, [])
+  }, [currentScreen])
   return fontsLoaded ? (
     <View style={{ flex: 1 }}>
       <SafeAreaView style={styles.container} />
@@ -153,7 +157,9 @@ const AddPaymentScreen = () => {
           />
         </View>
         <View style={styles.amountArea}>
-          <Text style={styles.paymentUserText}>カテゴリ</Text>
+          <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.SelectCategory === currentScreen)]}>
+            カテゴリ
+          </Text>
           <Text style={styles.paymentNumber}></Text>
         </View>
         <View style={styles.amountArea}>
