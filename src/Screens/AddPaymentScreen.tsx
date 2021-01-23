@@ -105,9 +105,7 @@ const AddPaymentScreen = () => {
       default:
         return <></>
     }
-  }, [currentScreen])
-
-  console.log('#######3inputState', inputState)
+  }, [currentScreen, inputState])
 
   const nextPage = useCallback(() => {
     switch (currentScreen) {
@@ -127,6 +125,7 @@ const AddPaymentScreen = () => {
     switch (currentScreen) {
       case CurrentScreenDef.KeyBoard:
         return inputState.amount === '0' || inputState.amount === ''
+
       default:
         return false
     }

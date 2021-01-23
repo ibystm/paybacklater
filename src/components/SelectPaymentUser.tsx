@@ -1,28 +1,48 @@
-import React, { Dispatch, FC, SetStateAction, useCallback } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import React, { Dispatch, FC, SetStateAction, useCallback, useMemo, useState } from 'react'
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { InputState } from '../Screens/AddPaymentScreen'
 import { Colors } from '../utils/types/color'
+import UserNameButton from './UserNameButton'
 
 type P = {
   state: InputState
   setState: Dispatch<SetStateAction<InputState>>
 }
 
+export enum ButtonRef {
+  Button1 = 'Button1',
+  Button2 = 'Button2'
+}
+
 const SelectPaymentUser: FC<P> = (props) => {
   const { state, setState } = props
+  const [otherButtonDisabled, setOtherButtonDisabled] = useState<ButtonRef>(ButtonRef.Button1)
   const onPressButton1 = useCallback(() => {
-    return setState((c) => ({
+    // button2がenableならdisabledにする
+    setOtherButtonDisabled(ButtonRef.Button2)
+    setState((c) => ({
       ...c,
       paymentUser: 'やすこ'
     }))
   }, [])
   const onPressButton2 = useCallback(() => {
-    return setState((c) => ({
+    // button1がenableならdisabledにする
+    setOtherButtonDisabled(ButtonRef.Button1)
+    setState((c) => ({
       ...c,
       paymentUser: 'ともこ'
     }))
   }, [])
+
+  const active1 = useMemo(() => ButtonRef.Button1 === otherButtonDisabled, [otherButtonDisabled])
+  const active2 = useMemo(() => ButtonRef.Button2 === otherButtonDisabled, [otherButtonDisabled])
+
+  const getDisabledStyle = useCallback(
+    (disabled: boolean): StyleProp<ViewStyle> => ({
+      opacity: disabled ? 0.4 : 1
+    }),
+    []
+  )
 
   return (
     <View style={styles.container}>
@@ -30,12 +50,8 @@ const SelectPaymentUser: FC<P> = (props) => {
         <Text style={styles.title}>どちらが支払いましたか？</Text>
       </View>
       <View style={{ alignContent: 'center' }}>
-        <TouchableOpacity style={styles.buttonBlue} onPress={onPressButton1}>
-          <Text style={styles.buttonText}>やすこ</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonPink} onPress={onPressButton2}>
-          <Text style={styles.buttonText}>ともこ</Text>
-        </TouchableOpacity>
+        <UserNameButton onPress={onPressButton1} buttonColor={Colors.Secondary} />
+        <UserNameButton onPress={onPressButton2} buttonColor={Colors.Secondary2} />
       </View>
     </View>
   )
