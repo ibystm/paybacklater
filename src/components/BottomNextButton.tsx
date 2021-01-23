@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Dimensions, StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
-import { Colors } from '../utils/types/color'
+import { Colors } from '../color'
 
 interface P {
   nextScreen: () => void

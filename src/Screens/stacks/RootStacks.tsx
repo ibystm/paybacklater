@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import AppContainer from '../../AppContainer'
 import AddPaymentScreen from '../AddPaymentScreen'
+import AppContainer from './AppContainer'
 
 const RootStacks = () => {
   const Stack = createStackNavigator()

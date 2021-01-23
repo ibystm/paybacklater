@@ -3,16 +3,14 @@ import { useNavigation } from '@react-navigation/native'
 import React, { ReactNode, useCallback, useMemo, useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, TextStyle, View } from 'react-native'
 import { TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import {
-  Category,
-  FixedCostSettings
-} from '../../../payment-builder/functions/src/firestore/types/firestoreUserPayments'
+import { FixedCostSettings } from '../api/types/apiTypes'
+import { Colors } from '../color'
 import BottomNextButton from '../components/BottomNextButton'
 import CategoryBoard from '../components/CategoryBoard'
 import CloseButton from '../components/icons/CloseButton'
 import MyKeyboard from '../components/icons/KeyboardPads'
 import SelectPaymentUser from '../components/SelectPaymentUser'
-import { Colors } from '../utils/types/color'
+import { Category, inputCategoryToText } from '../types/CategoryTypes'
 
 const styles = StyleSheet.create({
   container: { flex: 0.5, backgroundColor: '#fff' },
@@ -130,6 +128,7 @@ const AddPaymentScreen = () => {
         return false
     }
   }, [currentScreen, inputState.amount])
+
   return fontsLoaded ? (
     <View style={{ flex: 1 }}>
       <SafeAreaView style={styles.container} />
@@ -168,7 +167,13 @@ const AddPaymentScreen = () => {
           <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.SelectCategory === currentScreen)]}>
             カテゴリ
           </Text>
-          <Text style={styles.paymentNumber}></Text>
+          <TextInput
+            value={inputState.category ? inputCategoryToText(inputState.category) : ''}
+            onChangeText={() => {}}
+            showSoftInputOnFocus={false} // keyboardをoffるprops
+            // editable={false} // keyboardをoffるprops
+            style={styles.paymentNumber}
+          />
         </View>
         <View style={styles.amountArea}>
           <Text style={styles.paymentUserText}>メモ</Text>

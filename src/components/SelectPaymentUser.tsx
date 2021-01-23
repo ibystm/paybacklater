@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useCallback, useMemo, useState } from 'react'
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { Colors } from '../color'
 import { InputState } from '../Screens/AddPaymentScreen'
-import { Colors } from '../utils/types/color'
 import UserNameButton from './UserNameButton'
 
 type P = {

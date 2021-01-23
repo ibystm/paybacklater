@@ -2,8 +2,8 @@ import { FontAwesome, FontAwesome5, Foundation, MaterialCommunityIcons, Material
 import React, { Dispatch, FC, SetStateAction, useCallback } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Colors } from '../color'
 import { InputState } from '../Screens/AddPaymentScreen'
-import { Colors } from '../utils/types/color'
 
 type P = {
   state: InputState

@@ -5,12 +5,12 @@ import React, { FC } from 'react'
 import { Button, Text, View } from 'react-native'
 import 'react-native-gesture-handler'
 import { connect } from 'react-redux'
-import { deleteName, setName, store } from './redux/redux'
-import History from './Screens/History'
-import Home from './Screens/Home'
-import MyPage from './Screens/MyPage'
-import Notification from './Screens/Notification'
-import { Colors } from './utils/types/color'
+import { Colors } from '../../color'
+import { deleteName, setName, store } from '../../redux/redux'
+import History from '../History'
+import Home from '../Home'
+import MyPage from '../MyPage'
+import Notification from '../Notification'
 
 export interface P {
   name: string

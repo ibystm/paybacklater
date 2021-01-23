@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { Colors } from '../utils/types/color'
+import { Colors } from '../color'
 
 type P = {
   onPress: () => void

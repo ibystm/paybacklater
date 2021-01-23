@@ -1,14 +1,12 @@
-import React, { FC, useEffect, useMemo, useState } from 'react'
-import { View, Text, StyleSheet, Modal } from 'react-native'
 import { NunitoSans_900Black_Italic, useFonts } from '@expo-google-fonts/nunito-sans'
 import { Rubik_500Medium } from '@expo-google-fonts/rubik'
-import AppLoading from 'expo-app-loading'
-import { Colors } from '../utils/types/color'
+import React, { FC, useEffect, useMemo, useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import SwitchSelector from 'react-native-switch-selector'
-import { UsersService } from '../services/usersService'
+import { Colors } from '../color'
 import PayOffButton from '../components/icons/PayOffButton'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { UsersService } from '../services/usersService'
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 16, backgroundColor: '#ffff' },

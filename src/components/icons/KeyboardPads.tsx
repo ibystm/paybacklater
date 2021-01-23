@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, SetStateAction } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Colors } from '../../color'
 import { InputState } from '../../Screens/AddPaymentScreen'
-import { Colors } from '../../utils/types/color'
 
 type P = {
   state: InputState
