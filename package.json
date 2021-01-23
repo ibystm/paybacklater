@@ -39,6 +39,8 @@
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
+    "@firebase/app-types": "^0.6.1",
+    "@firebase/firestore-types": "^2.1.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-native": "^0.63.43",

@@ -1151,6 +1151,11 @@
   resolved "https://registry.yarnpkg.com/@firebase/app-types/-/app-types-0.5.1.tgz#8add41d10c533759a80a376d09d24af0a1009343"
   integrity sha512-fhe4KxEoRLD596tuIkvBXVHedVByI5ALzf5nMraOXsnBxLY0gKcMSXQGwwPxZyeUt/S1VM8DRVXOg9shegEO7g==
 
+"@firebase/app-types@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@firebase/app-types/-/app-types-0.6.1.tgz#dcbd23030a71c0c74fc95d4a3f75ba81653850e9"
+  integrity sha512-L/ZnJRAq7F++utfuoTKX4CLBG5YR7tFO3PLzG1/oXXKEezJ0kRL3CMRoueBEmTCzVb/6SIs2Qlaw++uDgi5Xyg==
+
 "@firebase/app@0.5.4":
   version "0.5.4"
   resolved "https://registry.yarnpkg.com/@firebase/app/-/app-0.5.4.tgz#3c23eabd0f3b2f48daa3530f6c6b18eeb96a8ec2"
@@ -1213,6 +1218,11 @@
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/@firebase/firestore-types/-/firestore-types-1.9.1.tgz#2a5372b3f314901186edbfd44b898f9120cf3a48"
   integrity sha512-w3pT+RMQOORS8Tvf6wCaW8sq8hklPS4FkWSGCyo/gIbATP7pG8rvQDihN1x6D3if1jILWiZ/uPyl0eazm+MGzw==
+
+"@firebase/firestore-types@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@firebase/firestore-types/-/firestore-types-2.1.0.tgz#ad406c6fd7f0eae7ea52979f712daa0166aef665"
+  integrity sha512-jietErBWihMvJkqqEquQy5GgoEwzHnMXXC/TsVoe9FPysXm1/AeJS12taS7ZYvenAtyvL/AEJyKrRKRh4adcJQ==
 
 "@firebase/firestore@1.11.0":
   version "1.11.0"
