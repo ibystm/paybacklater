@@ -5,18 +5,21 @@ import { Colors } from '../color'
 type P = {
   onPress: () => void
   buttonColor: string
+  text: string
   active?: boolean // TODO 一旦非活性にしておく。
+  width?: string
+  height?: string
 }
 
-const UserNameButton: FC<P> = ({ onPress, buttonColor }) => {
+const PButton: FC<P> = ({ onPress, buttonColor, text }) => {
   return (
     <TouchableOpacity style={{ ...styles.buttonBlue, backgroundColor: buttonColor }} onPress={onPress}>
-      <Text style={styles.buttonText}>やすこ</Text>
+      <Text style={styles.buttonText}>{text}</Text>
     </TouchableOpacity>
   )
 }
 
-export default UserNameButton
+export default PButton
 
 const styles = StyleSheet.create({
   container: {

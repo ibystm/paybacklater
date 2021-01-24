@@ -2,7 +2,7 @@ import React, { Dispatch, FC, SetStateAction, useCallback, useMemo, useState } f
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { Colors } from '../color'
 import { InputState } from '../Screens/AddPaymentScreen'
-import UserNameButton from './UserNameButton'
+import PButton from './PButton'
 
 type P = {
   state: InputState
@@ -50,8 +50,8 @@ const SelectPaymentUser: FC<P> = (props) => {
         <Text style={styles.title}>どちらが支払いましたか？</Text>
       </View>
       <View style={{ alignContent: 'center' }}>
-        <UserNameButton onPress={onPressButton1} buttonColor={Colors.Secondary} />
-        <UserNameButton onPress={onPressButton2} buttonColor={Colors.Secondary2} />
+        <PButton onPress={onPressButton1} buttonColor={Colors.Secondary} text={'やすこ'} />
+        <PButton onPress={onPressButton2} buttonColor={Colors.Secondary2} text={'ともこ'} />
       </View>
     </View>
   )

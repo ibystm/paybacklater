@@ -1,7 +1,7 @@
 import { Rubik_500Medium, useFonts } from '@expo-google-fonts/rubik'
 import { useNavigation } from '@react-navigation/native'
 import React, { FC, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, TextStyle, View } from 'react-native'
+import { SafeAreaView, ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native'
 import { TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { FixedCostSettings } from '../api/types/apiTypes'
 import { Colors } from '../color'
@@ -10,6 +10,7 @@ import CategoryBoard from '../components/CategoryBoard'
 import ChipLabel from '../components/ChipLabel'
 import CloseButton from '../components/icons/CloseButton'
 import MyKeyboard from '../components/icons/KeyboardPads'
+import PButton from '../components/PButton'
 import SelectPaymentUser from '../components/SelectPaymentUser'
 import { Category, inputCategoryToText } from '../types/CategoryTypes'
 
@@ -115,10 +116,11 @@ const AddPaymentScreen: FC = () => {
       case CurrentScreenDef.SelectPaymentUser:
         return setCurrentScreen(CurrentScreenDef.SelectCategory)
       case CurrentScreenDef.SelectCategory:
-        // @ts-ignore TextInput componentにfocus()メソッドあるのにtypescriptに怒られまくるのでignore
+        // @ts-ignore TextInput componentにfocus()メソッドあるのにtypescriptに怒られまくるのでignore。多分react-native側のバグ
         ref.current.focus()
         return setCurrentScreen(CurrentScreenDef.Memo)
       case CurrentScreenDef.Memo:
+        return setCurrentScreen(CurrentScreenDef.AddFixedCost)
       case CurrentScreenDef.AddFixedCost:
       default:
         return
@@ -143,11 +145,14 @@ const AddPaymentScreen: FC = () => {
   }, [])
 
   const onFocusMemo = useCallback(() => setCurrentScreen(CurrentScreenDef.Memo), [])
-  // @ts-ignore typescriptに怒られるのでignore,良いsolutionがあったら外したい
-  const onEnterMemo = useCallback(() => ref.current.blur(), [])
+  const onEnterMemo = useCallback(() => {
+    // @ts-ignore typescriptに怒られるのでignore,良いsolutionがあったら外したい
+    ref.current.blur()
+    setCurrentScreen(CurrentScreenDef.AddFixedCost)
+  }, [])
 
   return fontsLoaded ? (
-    <View style={{ flex: 1 }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
       <SafeAreaView style={styles.container} />
       <View style={styles.areaWrapper}>
         <View style={styles.upperArea}>
@@ -211,13 +216,27 @@ const AddPaymentScreen: FC = () => {
           </TouchableOpacity>
         </View>
       </View>
-      {currentScreen !== CurrentScreenDef.Memo && (
+      {currentScreen !== CurrentScreenDef.Memo && currentScreen !== CurrentScreenDef.AddFixedCost && (
         <View style={styles.keyboardAreaContainer}>
           {renderScreen}
           <BottomNextButton nextScreen={nextPage} disabled={disabled} />
         </View>
       )}
-    </View>
+      {currentScreen === CurrentScreenDef.AddFixedCost && (
+        <View
+          style={{
+            flex: 7,
+            backgroundColor: '#fff',
+            borderBottomWidth: 0,
+            width: '100%',
+            height: '100%',
+            alignItems: 'center'
+          }}
+        >
+          <PButton text="保存する" onPress={() => {}} buttonColor={Colors.Main} />
+        </View>
+      )}
+    </ScrollView>
   ) : (
     <></>
   )
