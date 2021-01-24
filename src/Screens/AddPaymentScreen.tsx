@@ -1,6 +1,6 @@
 import { Rubik_500Medium, useFonts } from '@expo-google-fonts/rubik'
 import { useNavigation } from '@react-navigation/native'
-import React, { ReactNode, useCallback, useMemo, useState } from 'react'
+import React, { FC, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, TextStyle, View } from 'react-native'
 import { TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { FixedCostSettings } from '../api/types/apiTypes'
@@ -79,13 +79,14 @@ const getTextStyles = (isAreaFocused: boolean): TextStyle => {
   }
 }
 
-const AddPaymentScreen = () => {
+const AddPaymentScreen: FC = () => {
   let [fontsLoaded] = useFonts({
     Rubik_500Medium
   })
   const [currentScreen, setCurrentScreen] = useState<CurrentScreenDef>(CurrentScreenDef.KeyBoard)
   // 入力内容を保持
   const [inputState, setInputState] = useState<InputState>(initialInputState)
+  const ref = useRef<TextInput>(null)
 
   const navigation = useNavigation()
   const goHome = useCallback(() => {
@@ -114,6 +115,9 @@ const AddPaymentScreen = () => {
       case CurrentScreenDef.SelectPaymentUser:
         return setCurrentScreen(CurrentScreenDef.SelectCategory)
       case CurrentScreenDef.SelectCategory:
+        // @ts-ignore TextInput componentにfocus()メソッドあるのにtypescriptに怒られまくるのでignore
+        ref.current.focus()
+        return setCurrentScreen(CurrentScreenDef.Memo)
       case CurrentScreenDef.Memo:
       case CurrentScreenDef.AddFixedCost:
       default:
@@ -130,6 +134,17 @@ const AddPaymentScreen = () => {
         return false
     }
   }, [currentScreen, inputState.amount])
+
+  const onChangeText = useCallback((text: string) => {
+    setInputState((c) => ({
+      ...c,
+      memo: text
+    }))
+  }, [])
+
+  const onFocusMemo = useCallback(() => setCurrentScreen(CurrentScreenDef.Memo), [])
+  // @ts-ignore typescriptに怒られるのでignore,良いsolutionがあったら外したい
+  const onEnterMemo = useCallback(() => ref.current.blur(), [])
 
   return fontsLoaded ? (
     <View style={{ flex: 1 }}>
@@ -173,8 +188,20 @@ const AddPaymentScreen = () => {
         </View>
         <View style={styles.amountArea}>
           <Text style={styles.paymentUserText}>メモ</Text>
-          <View style={{ borderBottomColor: Colors.Gray8, borderBottomWidth: 1, width: 200, marginBottom: 16 }}>
-            <TextInput />
+          <View
+            style={{ borderBottomColor: Colors.Gray8, borderBottomWidth: 1, width: 200, marginBottom: 16, height: 24 }}
+          >
+            <TextInput
+              ref={ref}
+              onChangeText={onChangeText}
+              onFocus={onFocusMemo}
+              numberOfLines={1}
+              onSubmitEditing={onEnterMemo}
+              returnKeyType="next"
+              placeholder="メモ"
+            >
+              <Text ellipsizeMode="tail">{inputState.memo}</Text>
+            </TextInput>
           </View>
         </View>
         <View style={styles.amountArea}>
@@ -184,10 +211,12 @@ const AddPaymentScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.keyboardAreaContainer}>
-        {renderScreen}
-        <BottomNextButton nextScreen={nextPage} disabled={disabled} />
-      </View>
+      {currentScreen !== CurrentScreenDef.Memo && (
+        <View style={styles.keyboardAreaContainer}>
+          {renderScreen}
+          <BottomNextButton nextScreen={nextPage} disabled={disabled} />
+        </View>
+      )}
     </View>
   ) : (
     <></>
