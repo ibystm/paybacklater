@@ -1,4 +1,5 @@
 import { Rubik_500Medium, useFonts } from '@expo-google-fonts/rubik'
+import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import React, { FC, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native'
@@ -8,7 +9,7 @@ import { Colors } from '../color'
 import BottomNextButton from '../components/BottomNextButton'
 import CategoryBoard from '../components/CategoryBoard'
 import ChipLabel from '../components/ChipLabel'
-import CloseButton from '../components/icons/CloseButton'
+import CloseButtonIcon from '../components/icons/CloseButtonIcon'
 import MyKeyboard from '../components/icons/KeyboardPads'
 import PButton from '../components/PButton'
 import SelectPaymentUser from '../components/SelectPaymentUser'
@@ -87,6 +88,8 @@ const AddPaymentScreen: FC = () => {
   const [currentScreen, setCurrentScreen] = useState<CurrentScreenDef>(CurrentScreenDef.KeyBoard)
   // 入力内容を保持
   const [inputState, setInputState] = useState<InputState>(initialInputState)
+
+  const [fixedCostModalShown, setFixedCostModalShown] = useState<boolean>(false)
   const ref = useRef<TextInput>(null)
 
   const navigation = useNavigation()
@@ -151,6 +154,8 @@ const AddPaymentScreen: FC = () => {
     setCurrentScreen(CurrentScreenDef.AddFixedCost)
   }, [])
 
+  const onPressAddFixedCost = useCallback(() => navigation.navigate('FixedCostScreen'), [])
+
   return fontsLoaded ? (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
       <SafeAreaView style={styles.container} />
@@ -159,7 +164,7 @@ const AddPaymentScreen: FC = () => {
           <View />
           <Text style={styles.addText}>追加</Text>
           <TouchableOpacity style={styles.closeButton} onPress={goHome}>
-            <CloseButton />
+            <CloseButtonIcon />
           </TouchableOpacity>
         </View>
         <TouchableWithoutFeedback style={styles.amountArea} onPress={() => setCurrentScreen(CurrentScreenDef.KeyBoard)}>
@@ -211,8 +216,9 @@ const AddPaymentScreen: FC = () => {
         </View>
         <View style={styles.amountArea}>
           <Text style={styles.paymentUserText}>固定費に追加</Text>
-          <TouchableOpacity style={{ height: 24 }}>
-            <Text style={{ color: Colors.Gray8, fontFamily: 'System', fontSize: 16 }}>設定{' > '}</Text>
+          <TouchableOpacity onPress={onPressAddFixedCost} style={{ height: 24, flexDirection: 'row' }}>
+            <Text style={{ color: Colors.Gray8, fontFamily: 'System', fontSize: 16 }}>設定</Text>
+            <AntDesign name="right" size={14} color={Colors.Gray8} style={{ top: 2, marginLeft: 10 }} />
           </TouchableOpacity>
         </View>
       </View>
