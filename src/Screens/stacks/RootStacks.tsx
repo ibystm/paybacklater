@@ -1,6 +1,7 @@
 import { createStackNavigator, StackCardInterpolatedStyle, StackCardInterpolationProps } from '@react-navigation/stack'
 import React from 'react'
 import { Animated } from 'react-native'
+import { Colors } from '../../color'
 import AddPaymentScreen from '../AddPaymentScreen'
 import FixedCostScreen from '../FixedCostScreen'
 import AppContainer from './AppContainer'
@@ -10,8 +11,18 @@ const RootStacks = () => {
   // TODO userの存在チェックをかける
   const user = true
   return (
-    <Stack.Navigator mode="modal" screenOptions={{ animationEnabled: false }} headerMode="none">
-      {user ? <Stack.Screen name="AppContainer" component={AppContainer} /> : <></>}
+    <Stack.Navigator mode="modal" screenOptions={{ animationEnabled: false }} headerMode="screen">
+      {user ? (
+        <Stack.Screen
+          name="AppContainer"
+          component={AppContainer}
+          options={{
+            headerShown: false
+          }}
+        />
+      ) : (
+        <></>
+      )}
       <Stack.Screen
         name="AddPaymentScreen"
         component={AddPaymentScreen}
@@ -24,6 +35,16 @@ const RootStacks = () => {
         name="FixedCostScreen"
         component={FixedCostScreen}
         options={{
+          title: '固定費',
+          headerShown: true,
+          headerStyle: {
+            shadowColor: 'transparent'
+          },
+          headerTintColor: Colors.Main,
+          headerLeftContainerStyle: {
+            marginLeft: 16
+          },
+          headerBackTitleVisible: false,
           animationEnabled: true,
           gestureDirection: 'horizontal',
           cardStyleInterpolator: forHorizontalModal
