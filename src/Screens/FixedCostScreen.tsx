@@ -1,13 +1,14 @@
+import { Feather } from '@expo/vector-icons'
 import React, { FC } from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { Colors } from '../color'
 import { FixedCostSettings } from '../types/FixedCostSettingTypes'
-import { P } from './stacks/AppContainer'
+import { FixedCostScreenRouteProps } from './stacks/RootStacks'
 
 type P = {
   onTapCloseModal: () => void
-  setFixedCost: () => void
+  route: FixedCostScreenRouteProps
 }
 
 type FixedCostSettingDataType = {
@@ -39,17 +40,27 @@ const settingData: FixedCostSettingDataType[] = [
   }
 ]
 
-const FixedCostScreen: FC<P> = ({ onTapCloseModal }) => {
+const FixedCostScreen: FC<P> = ({ route }) => {
+  const { fixedCostSettings, setState } = route.params
   const renderItem = ({ item }: { item: FixedCostSettingDataType }) => {
     const borderStyle: ViewStyle = item.id === '4' ? { borderBottomWidth: 0 } : { borderBottomWidth: 0.3 }
-
     return (
-      <TouchableOpacity style={{ ...styles.listButton, ...borderStyle }}>
+      <TouchableOpacity
+        style={{ ...styles.listButton, ...borderStyle }}
+        onPress={() =>
+          setState((c) => ({
+            ...c,
+            fixedCostSetting: item.type
+          }))
+        }
+      >
         <Text style={styles.listBtnText}>{item.name}</Text>
+        {item.type === fixedCostSettings && <Feather name="check" size={24} color={Colors.Main} style={styles.icon} />}
       </TouchableOpacity>
     )
   }
-
+  // 17,300
+  // 61,370
   return (
     <View style={styles.centeredView}>
       <FlatList data={settingData} renderItem={renderItem} />
@@ -81,7 +92,7 @@ const styles = StyleSheet.create({
   },
   listButton: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
     height: 40,
@@ -91,6 +102,9 @@ const styles = StyleSheet.create({
   listBtnText: {
     color: Colors.Gray8,
     fontSize: 16
+  },
+  icon: {
+    marginRight: 32
   }
 })
 

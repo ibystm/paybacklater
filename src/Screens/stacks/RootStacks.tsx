@@ -1,13 +1,24 @@
+import { RouteProp } from '@react-navigation/native'
 import { createStackNavigator, StackCardInterpolatedStyle, StackCardInterpolationProps } from '@react-navigation/stack'
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { Animated } from 'react-native'
 import { Colors } from '../../color'
-import AddPaymentScreen from '../AddPaymentScreen'
+import { FixedCostSettings } from '../../types/FixedCostSettingTypes'
+import AddPaymentScreen, { InputState } from '../AddPaymentScreen'
 import FixedCostScreen from '../FixedCostScreen'
 import AppContainer from './AppContainer'
 
+type RootStackParamList = {
+  AppContainer: undefined
+  AddPaymentScreen: undefined
+  FixedCostScreen: { fixedCostSettings: FixedCostSettings; setState: Dispatch<SetStateAction<InputState>> }
+}
+
+export type AddPaymentScreenRouteProps = RouteProp<RootStackParamList, 'AddPaymentScreen'>
+export type FixedCostScreenRouteProps = RouteProp<RootStackParamList, 'FixedCostScreen'>
+
 const RootStacks = () => {
-  const Stack = createStackNavigator()
+  const Stack = createStackNavigator<RootStackParamList>()
   // TODO userの存在チェックをかける
   const user = true
   return (
