@@ -8,7 +8,6 @@ import { Colors } from '../color'
 import BottomNextButton from '../components/BottomNextButton'
 import CategoryBoard from '../components/CategoryBoard'
 import ChipLabel from '../components/ChipLabel'
-import CloseButtonIcon from '../components/icons/CloseButtonIcon'
 import MyKeyboard from '../components/icons/KeyboardPads'
 import PButton from '../components/PButton'
 import SelectPaymentUser from '../components/SelectPaymentUser'
@@ -91,9 +90,6 @@ const AddPaymentScreen: FC = () => {
   const ref = useRef<TextInput>(null)
 
   const navigation = useNavigation()
-  const goHome = useCallback(() => {
-    navigation.goBack()
-  }, [])
 
   const renderScreen: ReactNode = useMemo(() => {
     switch (currentScreen) {
@@ -159,25 +155,16 @@ const AddPaymentScreen: FC = () => {
       }),
     []
   )
-  console.log('###############inputeState', inputState.fixedCostSetting)
 
   return fontsLoaded ? (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
       <SafeAreaView style={styles.container} />
       <View style={styles.areaWrapper}>
-        <View style={styles.upperArea}>
-          <View />
-          <Text style={styles.addText}>追加</Text>
-          <TouchableOpacity style={styles.closeButton} onPress={goHome}>
-            <CloseButtonIcon />
-          </TouchableOpacity>
-        </View>
         <TouchableWithoutFeedback style={styles.amountArea} onPress={() => setCurrentScreen(CurrentScreenDef.KeyBoard)}>
           <Text style={[styles.paymentText, getTextStyles(CurrentScreenDef.KeyBoard == currentScreen)]}>金額*</Text>
           <TextInput
             value={inputState.amount}
             onChangeText={() => {}}
-            // onKeyPress={() => setCurrentScreen(CurrentScreenDef.KeyBoard)}
             showSoftInputOnFocus={false} // keyboardをoffるprops
             editable={false} // keyboardをoffるprops
             style={styles.paymentNumber}
@@ -197,7 +184,6 @@ const AddPaymentScreen: FC = () => {
             value={inputState.category ? inputCategoryToText(inputState.category) : ''}
             onChangeText={() => {}}
             showSoftInputOnFocus={false} // keyboardをoffるprops
-            // editable={false} // keyboardをoffるprops
             style={styles.categoryText}
           />
         </View>

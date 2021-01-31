@@ -41,6 +41,8 @@ const settingData: FixedCostSettingDataType[] = [
 ]
 
 const FixedCostScreen: FC<P> = ({ route }) => {
+  // setStateをnavigateのparamsで渡すとwarningが出る
+  // @see https://reactnavigation.org/docs/troubleshooting#i-get-the-warning-non-serializable-values-were-found-in-the-navigation-state
   const { fixedCostSettings, setState } = route.params
   // この画面で管理する用のstate、paramで渡ってきているものとなんら変わりはない
   const [fixedCostSetting, setFixedCostSetting] = useState<FixedCostSettings>(fixedCostSettings)

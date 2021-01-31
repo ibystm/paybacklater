@@ -1,8 +1,9 @@
 import { RouteProp } from '@react-navigation/native'
 import { createStackNavigator, StackCardInterpolatedStyle, StackCardInterpolationProps } from '@react-navigation/stack'
 import React, { Dispatch, SetStateAction } from 'react'
-import { Animated } from 'react-native'
+import { Animated, StyleSheet, TouchableOpacity } from 'react-native'
 import { Colors } from '../../color'
+import CloseButtonIcon from '../../components/icons/CloseButtonIcon'
 import { FixedCostSettings } from '../../types/FixedCostSettingTypes'
 import AddPaymentScreen, { InputState } from '../AddPaymentScreen'
 import FixedCostScreen from '../FixedCostScreen'
@@ -37,10 +38,21 @@ const RootStacks = () => {
       <Stack.Screen
         name="AddPaymentScreen"
         component={AddPaymentScreen}
-        options={{
-          animationEnabled: true
-          // cardStyleInterpolator: forHorizontalModal
-        }}
+        options={({ navigation }) => ({
+          title: '追加',
+          animationEnabled: true,
+          headerRight: () => (
+            <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>
+              <CloseButtonIcon />
+            </TouchableOpacity>
+          ),
+          headerStyle: {
+            shadowColor: 'transparent'
+          },
+          headerBackTitleVisible: false,
+          headerTintColor: Colors.Main,
+          headerLeft: () => null
+        })}
       />
       <Stack.Screen
         name="FixedCostScreen"
@@ -66,6 +78,16 @@ const RootStacks = () => {
 }
 
 export default RootStacks
+
+const styles = StyleSheet.create({
+  closeButton: {
+    height: 40,
+    width: 40,
+    marginRight: 8,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+})
 
 export function forHorizontalModal({
   current,
