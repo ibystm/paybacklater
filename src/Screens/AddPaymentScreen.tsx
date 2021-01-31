@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native'
 import React, { FC, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native'
 import { TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import { FixedCostSettings } from '../api/types/apiTypes'
 import { Colors } from '../color'
 import BottomNextButton from '../components/BottomNextButton'
 import CategoryBoard from '../components/CategoryBoard'
@@ -14,6 +13,7 @@ import MyKeyboard from '../components/icons/KeyboardPads'
 import PButton from '../components/PButton'
 import SelectPaymentUser from '../components/SelectPaymentUser'
 import { Category, inputCategoryToText } from '../types/CategoryTypes'
+import { FixedCostSettings } from '../types/FixedCostSettingTypes'
 
 const styles = StyleSheet.create({
   container: { flex: 0.5, backgroundColor: '#fff' },
@@ -88,8 +88,6 @@ const AddPaymentScreen: FC = () => {
   const [currentScreen, setCurrentScreen] = useState<CurrentScreenDef>(CurrentScreenDef.KeyBoard)
   // 入力内容を保持
   const [inputState, setInputState] = useState<InputState>(initialInputState)
-
-  const [fixedCostModalShown, setFixedCostModalShown] = useState<boolean>(false)
   const ref = useRef<TextInput>(null)
 
   const navigation = useNavigation()
@@ -134,7 +132,6 @@ const AddPaymentScreen: FC = () => {
     switch (currentScreen) {
       case CurrentScreenDef.KeyBoard:
         return inputState.amount === '0' || inputState.amount === ''
-
       default:
         return false
     }
@@ -154,7 +151,15 @@ const AddPaymentScreen: FC = () => {
     setCurrentScreen(CurrentScreenDef.AddFixedCost)
   }, [])
 
-  const onPressAddFixedCost = useCallback(() => navigation.navigate('FixedCostScreen'), [])
+  const onPressAddFixedCost = useCallback(
+    () =>
+      navigation.navigate('FixedCostScreen', {
+        fixedCostSettings: inputState.fixedCostSetting,
+        setState: setInputState
+      }),
+    []
+  )
+  console.log('###############inputeState', inputState.fixedCostSetting)
 
   return fontsLoaded ? (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">

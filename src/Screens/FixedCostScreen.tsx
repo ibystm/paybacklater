@@ -1,5 +1,5 @@
 import { Feather } from '@expo/vector-icons'
-import React, { FC } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { Colors } from '../color'
@@ -42,28 +42,37 @@ const settingData: FixedCostSettingDataType[] = [
 
 const FixedCostScreen: FC<P> = ({ route }) => {
   const { fixedCostSettings, setState } = route.params
-  const renderItem = ({ item }: { item: FixedCostSettingDataType }) => {
-    const borderStyle: ViewStyle = item.id === '4' ? { borderBottomWidth: 0 } : { borderBottomWidth: 0.3 }
-    return (
-      <TouchableOpacity
-        style={{ ...styles.listButton, ...borderStyle }}
-        onPress={() =>
-          setState((c) => ({
-            ...c,
-            fixedCostSetting: item.type
-          }))
-        }
-      >
-        <Text style={styles.listBtnText}>{item.name}</Text>
-        {item.type === fixedCostSettings && <Feather name="check" size={24} color={Colors.Main} style={styles.icon} />}
-      </TouchableOpacity>
-    )
-  }
+  // この画面で管理する用のstate、paramで渡ってきているものとなんら変わりはない
+  const [fixedCostSetting, setFixedCostSetting] = useState<FixedCostSettings>(fixedCostSettings)
+
+  const renderItem = useCallback(
+    ({ item }: { item: FixedCostSettingDataType }) => {
+      const borderStyle: ViewStyle = item.id === '4' ? { borderBottomWidth: 0 } : { borderBottomWidth: 0.3 }
+      return (
+        <TouchableOpacity
+          style={{ ...styles.listButton, ...borderStyle }}
+          onPress={() => {
+            // TODO stateが二重管理になっている。直す
+            setState((c) => ({
+              ...c,
+              fixedCostSetting: item.type
+            }))
+            setFixedCostSetting(item.type)
+          }}
+        >
+          <Text style={styles.listBtnText}>{item.name}</Text>
+          {item.type === fixedCostSetting && <Feather name="check" size={24} color={Colors.Main} style={styles.icon} />}
+        </TouchableOpacity>
+      )
+    },
+    [fixedCostSettings, fixedCostSetting]
+  )
+
   // 17,300
   // 61,370
   return (
     <View style={styles.centeredView}>
-      <FlatList data={settingData} renderItem={renderItem} />
+      <FlatList data={settingData} renderItem={renderItem} extraData={fixedCostSettings} />
     </View>
   )
 }
