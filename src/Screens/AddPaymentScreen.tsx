@@ -2,7 +2,7 @@ import { Rubik_500Medium, useFonts } from '@expo-google-fonts/rubik'
 import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import React, { FC, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native'
+import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native'
 import { TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { Colors } from '../color'
 import BottomNextButton from '../components/BottomNextButton'
@@ -97,6 +97,7 @@ const AddPaymentScreen: FC = () => {
   const [currentScreen, setCurrentScreen] = useState<CurrentScreenDef>(CurrentScreenDef.KeyBoard)
   // 入力内容を保持
   const [inputState, setInputState] = useState<InputState>(initialInputState)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const ref = useRef<TextInput>(null)
 
   const navigation = useNavigation()
@@ -165,82 +166,91 @@ const AddPaymentScreen: FC = () => {
       }),
     []
   )
-
   const onTapPaymentUser = useCallback(() => setCurrentScreen(CurrentScreenDef.SelectPaymentUser), [])
   const onTapCategoryArea = useCallback(() => setCurrentScreen(CurrentScreenDef.SelectCategory), [])
+  const onSavePayment = useCallback(() => {
+    setIsLoading(true)
+    setTimeout(() => setIsLoading(false), 2000)
+  }, [])
 
   return fontsLoaded ? (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-      <SafeAreaView style={styles.container} />
-      <View style={styles.areaWrapper}>
-        <TouchableWithoutFeedback style={styles.amountArea} onPress={() => setCurrentScreen(CurrentScreenDef.KeyBoard)}>
-          <Text style={[styles.paymentText, getTextStyles(CurrentScreenDef.KeyBoard == currentScreen)]}>金額*</Text>
-          <TextInput
-            value={inputState.amount}
-            onChangeText={() => {}}
-            showSoftInputOnFocus={false} // keyboardをoffるprops
-            editable={false} // keyboardをoffるprops
-            style={styles.paymentNumber}
-          />
-        </TouchableWithoutFeedback>
-        <View style={styles.amountArea}>
-          <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.SelectPaymentUser === currentScreen)]}>
-            支払った人*
-          </Text>
-          {!!inputState.paymentUser && (
-            <TouchableOpacity onPress={onTapPaymentUser}>
-              <ChipLabel label={inputState.paymentUser} color={Colors.Secondary} />
-            </TouchableOpacity>
-          )}
-        </View>
-        <View style={styles.amountArea}>
-          <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.SelectCategory === currentScreen)]}>
-            カテゴリ
-          </Text>
-          <TouchableOpacity onPress={onTapCategoryArea}>
-            <Text style={styles.categoryText}>
-              {inputState.category ? inputCategoryToText(inputState.category) : ''}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.amountArea}>
-          <Text style={[styles.paymentUserText, , getTextStyles(CurrentScreenDef.Memo === currentScreen)]}>メモ</Text>
-          <View style={styles.memoArea}>
+    <>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+        <SafeAreaView style={styles.container} />
+        <View style={styles.areaWrapper}>
+          <TouchableWithoutFeedback
+            style={styles.amountArea}
+            onPress={() => setCurrentScreen(CurrentScreenDef.KeyBoard)}
+          >
+            <Text style={[styles.paymentText, getTextStyles(CurrentScreenDef.KeyBoard == currentScreen)]}>金額*</Text>
             <TextInput
-              ref={ref}
-              onChangeText={onChangeText}
-              onFocus={onFocusMemo}
-              numberOfLines={1}
-              onSubmitEditing={onEnterMemo}
-              returnKeyType="next"
-              placeholder="メモ"
-            >
-              <Text ellipsizeMode="tail">{inputState.memo}</Text>
-            </TextInput>
+              value={inputState.amount}
+              onChangeText={() => {}}
+              showSoftInputOnFocus={false} // keyboardをoffるprops
+              editable={false} // keyboardをoffるprops
+              style={styles.paymentNumber}
+            />
+          </TouchableWithoutFeedback>
+          <View style={styles.amountArea}>
+            <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.SelectPaymentUser === currentScreen)]}>
+              支払った人*
+            </Text>
+            {!!inputState.paymentUser && (
+              <TouchableOpacity onPress={onTapPaymentUser}>
+                <ChipLabel label={inputState.paymentUser} color={Colors.Secondary} />
+              </TouchableOpacity>
+            )}
+          </View>
+          <View style={styles.amountArea}>
+            <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.SelectCategory === currentScreen)]}>
+              カテゴリ
+            </Text>
+            <TouchableOpacity onPress={onTapCategoryArea}>
+              <Text style={styles.categoryText}>
+                {inputState.category ? inputCategoryToText(inputState.category) : ''}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.amountArea}>
+            <Text style={[styles.paymentUserText, , getTextStyles(CurrentScreenDef.Memo === currentScreen)]}>メモ</Text>
+            <View style={styles.memoArea}>
+              <TextInput
+                ref={ref}
+                onChangeText={onChangeText}
+                onFocus={onFocusMemo}
+                numberOfLines={1}
+                onSubmitEditing={onEnterMemo}
+                returnKeyType="next"
+                placeholder="メモ"
+              >
+                <Text ellipsizeMode="tail">{inputState.memo}</Text>
+              </TextInput>
+            </View>
+          </View>
+          <View style={styles.amountArea}>
+            <Text style={[styles.paymentUserText, , getTextStyles(CurrentScreenDef.AddFixedCost === currentScreen)]}>
+              固定費に追加
+            </Text>
+            <TouchableOpacity onPress={onPressAddFixedCost} style={{ height: 24, flexDirection: 'row' }}>
+              <Text style={styles.settingText}>設定</Text>
+              <AntDesign name="right" size={14} color={Colors.Gray8} style={{ top: 2, marginLeft: 10 }} />
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.amountArea}>
-          <Text style={[styles.paymentUserText, , getTextStyles(CurrentScreenDef.AddFixedCost === currentScreen)]}>
-            固定費に追加
-          </Text>
-          <TouchableOpacity onPress={onPressAddFixedCost} style={{ height: 24, flexDirection: 'row' }}>
-            <Text style={styles.settingText}>設定</Text>
-            <AntDesign name="right" size={14} color={Colors.Gray8} style={{ top: 2, marginLeft: 10 }} />
-          </TouchableOpacity>
-        </View>
-      </View>
-      {currentScreen !== CurrentScreenDef.Memo && currentScreen !== CurrentScreenDef.AddFixedCost && (
-        <View style={styles.keyboardAreaContainer}>
-          {renderScreen}
-          <BottomNextButton nextScreen={nextPage} disabled={disabled} />
-        </View>
-      )}
-      {currentScreen === CurrentScreenDef.AddFixedCost && (
-        <View style={styles.fixedCostArea}>
-          <PButton text="保存する" onPress={() => {}} buttonColor={Colors.Main} />
-        </View>
-      )}
-    </ScrollView>
+        {currentScreen !== CurrentScreenDef.Memo && currentScreen !== CurrentScreenDef.AddFixedCost && (
+          <View style={styles.keyboardAreaContainer}>
+            {renderScreen}
+            <BottomNextButton nextScreen={nextPage} disabled={disabled} />
+          </View>
+        )}
+        {currentScreen === CurrentScreenDef.AddFixedCost && (
+          <View style={styles.fixedCostArea}>
+            <PButton text="保存する" onPress={onSavePayment} buttonColor={Colors.Main} />
+          </View>
+        )}
+      </ScrollView>
+      <ActivityIndicator animating={isLoading} size="small" />
+    </>
   ) : (
     <></>
   )
