@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   nextButton: {
     flex: 0.5,
     width: windowWidth,
-    height: 56,
+    height: 48,
     position: 'absolute',
     bottom: 0,
     backgroundColor: Colors.Main,

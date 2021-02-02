@@ -47,7 +47,17 @@ const styles = StyleSheet.create({
     shadowColor: '#000000',
     shadowOpacity: 0.1,
     alignItems: 'center'
-  }
+  },
+  fixedCostArea: {
+    flex: 7,
+    backgroundColor: '#fff',
+    borderBottomWidth: 0,
+    width: '100%',
+    height: '100%',
+    alignItems: 'center'
+  },
+  settingText: { color: Colors.Gray8, fontFamily: 'System', fontSize: 16 },
+  memoArea: { borderBottomColor: Colors.Gray8, borderBottomWidth: 1, width: 200, marginBottom: 16, height: 24 }
 })
 
 export enum CurrentScreenDef {
@@ -156,6 +166,9 @@ const AddPaymentScreen: FC = () => {
     []
   )
 
+  const onTapPaymentUser = useCallback(() => setCurrentScreen(CurrentScreenDef.SelectPaymentUser), [])
+  const onTapCategoryArea = useCallback(() => setCurrentScreen(CurrentScreenDef.SelectCategory), [])
+
   return fontsLoaded ? (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
       <SafeAreaView style={styles.container} />
@@ -174,24 +187,25 @@ const AddPaymentScreen: FC = () => {
           <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.SelectPaymentUser === currentScreen)]}>
             支払った人*
           </Text>
-          {!!inputState.paymentUser && <ChipLabel label={inputState.paymentUser} color={Colors.Secondary} />}
+          {!!inputState.paymentUser && (
+            <TouchableOpacity onPress={onTapPaymentUser}>
+              <ChipLabel label={inputState.paymentUser} color={Colors.Secondary} />
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.amountArea}>
           <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.SelectCategory === currentScreen)]}>
             カテゴリ
           </Text>
-          <TextInput
-            value={inputState.category ? inputCategoryToText(inputState.category) : ''}
-            onChangeText={() => {}}
-            showSoftInputOnFocus={false} // keyboardをoffるprops
-            style={styles.categoryText}
-          />
+          <TouchableOpacity onPress={onTapCategoryArea}>
+            <Text style={styles.categoryText}>
+              {inputState.category ? inputCategoryToText(inputState.category) : ''}
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.amountArea}>
-          <Text style={styles.paymentUserText}>メモ</Text>
-          <View
-            style={{ borderBottomColor: Colors.Gray8, borderBottomWidth: 1, width: 200, marginBottom: 16, height: 24 }}
-          >
+          <Text style={[styles.paymentUserText, , getTextStyles(CurrentScreenDef.Memo === currentScreen)]}>メモ</Text>
+          <View style={styles.memoArea}>
             <TextInput
               ref={ref}
               onChangeText={onChangeText}
@@ -206,9 +220,11 @@ const AddPaymentScreen: FC = () => {
           </View>
         </View>
         <View style={styles.amountArea}>
-          <Text style={styles.paymentUserText}>固定費に追加</Text>
+          <Text style={[styles.paymentUserText, , getTextStyles(CurrentScreenDef.AddFixedCost === currentScreen)]}>
+            固定費に追加
+          </Text>
           <TouchableOpacity onPress={onPressAddFixedCost} style={{ height: 24, flexDirection: 'row' }}>
-            <Text style={{ color: Colors.Gray8, fontFamily: 'System', fontSize: 16 }}>設定</Text>
+            <Text style={styles.settingText}>設定</Text>
             <AntDesign name="right" size={14} color={Colors.Gray8} style={{ top: 2, marginLeft: 10 }} />
           </TouchableOpacity>
         </View>
@@ -220,16 +236,7 @@ const AddPaymentScreen: FC = () => {
         </View>
       )}
       {currentScreen === CurrentScreenDef.AddFixedCost && (
-        <View
-          style={{
-            flex: 7,
-            backgroundColor: '#fff',
-            borderBottomWidth: 0,
-            width: '100%',
-            height: '100%',
-            alignItems: 'center'
-          }}
-        >
+        <View style={styles.fixedCostArea}>
           <PButton text="保存する" onPress={() => {}} buttonColor={Colors.Main} />
         </View>
       )}
