@@ -1,5 +1,10 @@
 import { RouteProp } from '@react-navigation/native'
-import { createStackNavigator, StackCardInterpolatedStyle, StackCardInterpolationProps } from '@react-navigation/stack'
+import {
+  createStackNavigator,
+  StackCardInterpolatedStyle,
+  StackCardInterpolationProps,
+  StackNavigationProp
+} from '@react-navigation/stack'
 import React, { Dispatch, SetStateAction } from 'react'
 import { Animated, StyleSheet, TouchableOpacity } from 'react-native'
 import { Colors } from '../../color'
@@ -12,11 +17,14 @@ import AppContainer from './AppContainer'
 type RootStackParamList = {
   AppContainer: undefined
   AddPaymentScreen: undefined
-  FixedCostScreen: { fixedCostSettings: FixedCostSettings; setState: Dispatch<SetStateAction<InputState>> }
+  FixedCostScreen: { selectedSettings: FixedCostSettings; setState: Dispatch<SetStateAction<InputState>> }
 }
 
 export type AddPaymentScreenRouteProps = RouteProp<RootStackParamList, 'AddPaymentScreen'>
 export type FixedCostScreenRouteProps = RouteProp<RootStackParamList, 'FixedCostScreen'>
+
+export type AddPaymentScreenNavigationProps = StackNavigationProp<RootStackParamList, 'AddPaymentScreen'>
+export type FixedCostScreenNavigationProps = StackNavigationProp<RootStackParamList, 'FixedCostScreen'>
 
 const RootStacks = () => {
   const Stack = createStackNavigator<RootStackParamList>()
