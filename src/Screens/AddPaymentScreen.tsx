@@ -2,7 +2,7 @@ import { Rubik_500Medium, useFonts } from '@expo-google-fonts/rubik'
 import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import React, { FC, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
-import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native'
+import { SafeAreaView, ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native'
 import { TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { Colors } from '../color'
 import BottomNextButton from '../components/BottomNextButton'
@@ -161,7 +161,7 @@ const AddPaymentScreen: FC = () => {
   const onPressAddFixedCost = useCallback(
     () =>
       navigation.navigate('FixedCostScreen', {
-        fixedCostSettings: inputState.fixedCostSetting,
+        selectedSettings: inputState.fixedCostSetting,
         setState: setInputState
       }),
     []
@@ -172,6 +172,21 @@ const AddPaymentScreen: FC = () => {
     setIsLoading(true)
     setTimeout(() => setIsLoading(false), 2000)
   }, [])
+
+  const fixedCostTypeToText = useCallback(() => {
+    switch (inputState.fixedCostSetting) {
+      case 'beginningOfMonth':
+        return '月初'
+      case 'middleOfMonth':
+        return '15日'
+      case 'endOfMonth':
+        return '月末'
+      case 'none':
+        return '未設定'
+      default:
+        new Error('invalid fixedCost type.')
+    }
+  }, [inputState.fixedCostSetting])
 
   return fontsLoaded ? (
     <>
@@ -232,7 +247,7 @@ const AddPaymentScreen: FC = () => {
               固定費に追加
             </Text>
             <TouchableOpacity onPress={onPressAddFixedCost} style={{ height: 24, flexDirection: 'row' }}>
-              <Text style={styles.settingText}>設定</Text>
+              <Text style={styles.settingText}>{fixedCostTypeToText()}</Text>
               <AntDesign name="right" size={14} color={Colors.Gray8} style={{ top: 2, marginLeft: 10 }} />
             </TouchableOpacity>
           </View>
@@ -249,7 +264,6 @@ const AddPaymentScreen: FC = () => {
           </View>
         )}
       </ScrollView>
-      <ActivityIndicator animating={isLoading} size="small" />
     </>
   ) : (
     <></>

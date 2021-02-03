@@ -1,13 +1,14 @@
 import { Feather } from '@expo/vector-icons'
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useLayoutEffect, useState, useEffect } from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { Colors } from '../color'
 import { FixedCostSettings } from '../types/FixedCostSettingTypes'
-import { FixedCostScreenRouteProps } from './stacks/RootStacks'
+import { AddPaymentScreenNavigationProps, FixedCostScreenRouteProps } from './stacks/RootStacks'
+import { useNavigation } from '@react-navigation/native'
+import { HeaderBackButton } from '@react-navigation/stack'
 
 type P = {
-  onTapCloseModal: () => void
   route: FixedCostScreenRouteProps
 }
 
@@ -43,9 +44,13 @@ const settingData: FixedCostSettingDataType[] = [
 const FixedCostScreen: FC<P> = ({ route }) => {
   // setStateをnavigateのparamsで渡すとwarningが出る
   // @see https://reactnavigation.org/docs/troubleshooting#i-get-the-warning-non-serializable-values-were-found-in-the-navigation-state
-  const { fixedCostSettings, setState } = route.params
+  const { selectedSettings, setState } = route.params
   // この画面で管理する用のstate、paramで渡ってきているものとなんら変わりはない
-  const [fixedCostSetting, setFixedCostSetting] = useState<FixedCostSettings>(fixedCostSettings)
+  const [fixedCostSetting, setFixedCostSetting] = useState<FixedCostSettings>('none')
+
+  useEffect(() => {
+    setFixedCostSetting(selectedSettings)
+  }, [selectedSettings])
 
   const renderItem = useCallback(
     ({ item }: { item: FixedCostSettingDataType }) => {
@@ -67,14 +72,14 @@ const FixedCostScreen: FC<P> = ({ route }) => {
         </TouchableOpacity>
       )
     },
-    [fixedCostSettings, fixedCostSetting]
+    [selectedSettings, fixedCostSetting]
   )
 
   // 17,300
   // 61,370
   return (
     <View style={styles.centeredView}>
-      <FlatList data={settingData} renderItem={renderItem} extraData={fixedCostSettings} />
+      <FlatList data={settingData} renderItem={renderItem} extraData={selectedSettings} />
     </View>
   )
 }
