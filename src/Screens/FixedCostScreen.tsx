@@ -1,12 +1,10 @@
 import { Feather } from '@expo/vector-icons'
-import React, { FC, useCallback, useLayoutEffect, useState, useEffect } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { Colors } from '../color'
 import { FixedCostSettings } from '../types/FixedCostSettingTypes'
-import { AddPaymentScreenNavigationProps, FixedCostScreenRouteProps } from './stacks/RootStacks'
-import { useNavigation } from '@react-navigation/native'
-import { HeaderBackButton } from '@react-navigation/stack'
+import { FixedCostScreenRouteProps } from './stacks/RootStacks'
 
 type P = {
   route: FixedCostScreenRouteProps
