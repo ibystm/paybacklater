@@ -17,7 +17,7 @@ import { FixedCostSettings } from '../types/FixedCostSettingTypes'
 
 const styles = StyleSheet.create({
   container: { flex: 0.5, backgroundColor: '#fff' },
-  areaWrapper: { flex: 7, paddingTop: 24, paddingHorizontal: 32, backgroundColor: '#fff' },
+  areaWrapper: { flex: 4, paddingTop: 24, paddingHorizontal: 32, backgroundColor: '#fff' },
   upperArea: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
   categoryText: { fontSize: 16, fontFamily: 'System' },
   paymentUserText: { fontSize: 16, color: Colors.Gray8, fontWeight: '500' },
   keyboardAreaContainer: {
-    flex: 7,
     backgroundColor: '#fff',
     borderBottomWidth: 0,
     width: '100%',
-    height: '100%',
+    height: 344, // 高さは固定でもたせるのかはだいぶ悩ましいからFIXME
+    justifyContent: 'center',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingHorizontal: 32,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   fixedCostArea: {
-    flex: 7,
+    flex: 3,
     backgroundColor: '#fff',
     borderBottomWidth: 0,
     width: '100%',
@@ -151,7 +151,6 @@ const AddPaymentScreen: FC = () => {
       memo: text
     }))
   }, [])
-
   const onFocusMemo = useCallback(() => setCurrentScreen(CurrentScreenDef.Memo), [])
   const onEnterMemo = useCallback(() => {
     // @ts-ignore typescriptに怒られるのでignore,良いsolutionがあったら外したい
@@ -176,7 +175,6 @@ const AddPaymentScreen: FC = () => {
       navigation.navigate('AppContainer', { isSaveDone: true })
     }, 2000)
   }, [])
-
   const fixedCostTypeToText = useCallback(() => {
     switch (inputState.fixedCostSetting) {
       case 'beginningOfMonth':

@@ -1,7 +1,7 @@
 // home.js
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons'
 import { BottomTabScreenProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React from 'react'
+import React, { useCallback } from 'react'
 import 'react-native-gesture-handler'
 import { Colors } from '../../color'
 import History from '../History'
@@ -24,6 +24,7 @@ const Tab = createBottomTabNavigator()
 
 const AppContainer = (props: HomeTabProps) => {
   const isSaveDone = !!props.route.params && !!props.route.params.isSaveDone
+  const renderHome = useCallback(() => <Home saveDone={isSaveDone} />, [isSaveDone])
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -34,7 +35,7 @@ const AppContainer = (props: HomeTabProps) => {
     >
       <Tab.Screen
         name="Home"
-        component={() => <Home saveDone={isSaveDone} />}
+        component={renderHome}
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => <AntDesign name="home" size={28} color={color} />
