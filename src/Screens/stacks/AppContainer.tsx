@@ -1,27 +1,29 @@
 // home.js
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { BottomTabScreenProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React from 'react'
 import 'react-native-gesture-handler'
-import { connect } from 'react-redux'
 import { Colors } from '../../color'
-import { deleteName, setName } from '../../redux/redux'
 import History from '../History'
 import Home from '../Home'
 import MyPage from '../MyPage'
 import Notification from '../Notification'
 
-export interface P {
-  name: string
-  deleteName: () => void
-  setName: (str: string) => void
+type BottomTabParamList = {
+  Home: { isSaveDone: boolean }
+  History: undefined
+  Notification: undefined
+  MyPage: undefined
 }
+
+export type HomeTabProps = BottomTabScreenProps<BottomTabParamList, 'Home'>
 
 const dummyComponent = () => null
 
 const Tab = createBottomTabNavigator()
 
-const AppContainer = () => {
+const AppContainer = (props: HomeTabProps) => {
+  const isSaveDone = !!props.route.params && !!props.route.params.isSaveDone
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -32,7 +34,7 @@ const AppContainer = () => {
     >
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={() => <Home saveDone={isSaveDone} />}
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => <AntDesign name="home" size={28} color={color} />
@@ -80,16 +82,4 @@ const AppContainer = () => {
   )
 }
 
-// FIX ME
-const mapStateToProps = (state: any) => ({
-  // storeは巨大なJsonの塊なので、nameにjsonから取って来たデータを代入している。
-  name: state.user.name
-})
-
-const mapDispatchToProps = {
-  // importしたactionCreatorを記述。
-  setName,
-  deleteName
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppContainer)
+export default AppContainer

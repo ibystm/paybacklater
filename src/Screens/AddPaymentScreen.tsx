@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import React, { FC, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native'
 import { TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import Spinner from 'react-native-loading-spinner-overlay'
 import { Colors } from '../color'
 import BottomNextButton from '../components/BottomNextButton'
 import CategoryBoard from '../components/CategoryBoard'
@@ -170,7 +171,10 @@ const AddPaymentScreen: FC = () => {
   const onTapCategoryArea = useCallback(() => setCurrentScreen(CurrentScreenDef.SelectCategory), [])
   const onSavePayment = useCallback(() => {
     setIsLoading(true)
-    setTimeout(() => setIsLoading(false), 2000)
+    setTimeout(() => {
+      setIsLoading(false)
+      navigation.navigate('AppContainer', { isSaveDone: true })
+    }, 2000)
   }, [])
 
   const fixedCostTypeToText = useCallback(() => {
@@ -263,6 +267,7 @@ const AddPaymentScreen: FC = () => {
             <PButton text="保存する" onPress={onSavePayment} buttonColor={Colors.Main} />
           </View>
         )}
+        <Spinner visible={isLoading} textContent="保存中" textStyle={{ color: 'white' }} />
       </ScrollView>
     </>
   ) : (

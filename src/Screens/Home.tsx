@@ -1,12 +1,11 @@
 import { NunitoSans_900Black_Italic, useFonts } from '@expo-google-fonts/nunito-sans'
 import { Rubik_500Medium } from '@expo-google-fonts/rubik'
-import React, { FC, useEffect, useMemo, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Modal from 'react-native-modal'
 import SwitchSelector from 'react-native-switch-selector'
 import { Colors } from '../color'
 import PayOffButton from '../components/icons/PayOffButton'
-import { UsersService } from '../services/usersService'
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 16, backgroundColor: '#ffff' },
@@ -53,7 +52,13 @@ const styles = StyleSheet.create({
   userSwitch: { marginBottom: 18, justifyContent: 'center', alignItems: 'center' }
 })
 
-const Home: FC = () => {
+type P = {
+  saveDone?: boolean
+}
+
+const Home: FC<P> = (props) => {
+  const { saveDone } = props
+  console.log('################isSaveDone', saveDone)
   let [fontsLoaded] = useFonts({
     NunitoSans_900Black_Italic,
     Rubik_500Medium
@@ -69,11 +74,15 @@ const Home: FC = () => {
     []
   )
 
+  const [paymentComplete, setPaymentComplete] = useState<boolean>(!!saveDone)
+
   useEffect(() => {
-    UsersService.getUsersTotalDebts('Oe6XKXl31y9TFvMdMADo').then((res) => {
-      setUser(res)
-    })
-  }, [activeUser])
+    // UsersService.getUsersTotalDebts('Oe6XKXl31y9TFvMdMADo').then((res) => {
+    //   setUser(res)
+    // })
+  }, [])
+
+  const onTapPaymentDone = useCallback(() => setPaymentComplete(false), [])
 
   return fontsLoaded && isLoading ? (
     <View style={styles.container}>
@@ -114,6 +123,45 @@ const Home: FC = () => {
       <TouchableOpacity style={styles.payOffButton}>
         <PayOffButton />
       </TouchableOpacity>
+      <Modal isVisible={paymentComplete}>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <View
+            style={{
+              height: 216,
+              width: 216,
+              backgroundColor: '#fff',
+              borderRadius: 20,
+              alignItems: 'center'
+            }}
+          >
+            <View style={{ marginTop: 32 }}>
+              <Image source={require('../../assets/images/check-icon.png')} width={64} height={64} />
+            </View>
+            <Text style={{ marginVertical: 16, fontSize: 16, fontWeight: '600', lineHeight: 22, color: Colors.Gray7 }}>
+              入力が完了しました！
+            </Text>
+            <TouchableOpacity
+              style={{
+                backgroundColor: Colors.Main,
+                width: 160,
+                height: 32,
+                justifyContent: 'center',
+                borderRadius: 30,
+                marginBottom: 24
+              }}
+              onPress={onTapPaymentDone}
+            >
+              <Text style={{ textAlign: 'center', color: '#fff', fontWeight: '600' }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   ) : (
     <></>
