@@ -26,10 +26,11 @@ const styles = StyleSheet.create({
   addText: { alignItems: 'center', color: Colors.Main, fontSize: 16, fontWeight: 'bold' },
   closeButton: { height: 24 },
   amountArea: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16, height: 32 },
-  paymentText: { fontSize: 16, fontWeight: '500', color: Colors.Main },
+  paymentText: { fontSize: 16, fontWeight: '600', color: Colors.Gray8, lineHeight: 24 },
+  requiredText: { fontWeight: '600' },
   paymentNumber: { color: Colors.Gray8, fontSize: 24, lineHeight: 32, fontFamily: 'Rubik_500Medium', paddingRight: 8 },
   categoryText: { fontSize: 16, fontFamily: 'System' },
-  paymentUserText: { fontSize: 16, color: Colors.Gray8, fontWeight: '500' },
+  paymentUserText: { fontSize: 16, color: Colors.Gray8, fontWeight: 'normal', lineHeight: 24 },
   keyboardAreaContainer: {
     backgroundColor: '#fff',
     borderBottomWidth: 0,
@@ -209,7 +210,7 @@ const AddPaymentScreen: FC = () => {
             />
           </TouchableWithoutFeedback>
           <View style={styles.amountArea}>
-            <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.SelectPaymentUser === currentScreen)]}>
+            <Text style={[styles.paymentText, getTextStyles(CurrentScreenDef.SelectPaymentUser === currentScreen)]}>
               支払った人*
             </Text>
             {!!inputState.paymentUser && (
