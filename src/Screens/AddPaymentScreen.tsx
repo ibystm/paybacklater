@@ -1,5 +1,5 @@
 import { Rubik_500Medium, useFonts } from '@expo-google-fonts/rubik'
-import { AntDesign } from '@expo/vector-icons'
+import { AntDesign, Feather, Ionicons, Octicons, SimpleLineIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import React, { FC, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native'
@@ -25,7 +25,15 @@ const styles = StyleSheet.create({
   },
   addText: { alignItems: 'center', color: Colors.Main, fontSize: 16, fontWeight: 'bold' },
   closeButton: { height: 24 },
-  amountArea: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16, height: 32 },
+  amountArea: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+    height: 32,
+    alignItems: 'center'
+  },
+  icon: { paddingRight: 8 },
+  iconWrapper: { flexDirection: 'row', alignItems: 'center' },
   paymentText: { fontSize: 16, fontWeight: '600', color: Colors.Gray8, lineHeight: 24 },
   requiredText: { fontWeight: '600' },
   paymentNumber: { color: Colors.Gray8, fontSize: 24, lineHeight: 32, fontFamily: 'Rubik_500Medium', paddingRight: 8 },
@@ -58,7 +66,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   settingText: { color: Colors.Gray8, fontFamily: 'System', fontSize: 16 },
-  memoArea: { borderBottomColor: Colors.Gray8, borderBottomWidth: 1, width: 200, marginBottom: 16, height: 24 }
+  memoArea: { borderBottomColor: Colors.Gray8, borderBottomWidth: 1, width: 160, marginBottom: 16, height: 24 }
 })
 
 export enum CurrentScreenDef {
@@ -199,7 +207,10 @@ const AddPaymentScreen: FC = () => {
             style={styles.amountArea}
             onPress={() => setCurrentScreen(CurrentScreenDef.KeyBoard)}
           >
-            <Text style={[styles.paymentText, getTextStyles(CurrentScreenDef.KeyBoard == currentScreen)]}>金額*</Text>
+            <View style={styles.iconWrapper}>
+              <Ionicons name="md-logo-yen" size={15} color={Colors.Gray8} style={styles.icon} />
+              <Text style={[styles.paymentText, getTextStyles(CurrentScreenDef.KeyBoard == currentScreen)]}>金額*</Text>
+            </View>
             <TextInput
               value={inputState.amount}
               onChangeText={() => {}}
@@ -209,9 +220,12 @@ const AddPaymentScreen: FC = () => {
             />
           </TouchableWithoutFeedback>
           <View style={styles.amountArea}>
-            <Text style={[styles.paymentText, getTextStyles(CurrentScreenDef.SelectPaymentUser === currentScreen)]}>
-              支払った人*
-            </Text>
+            <View style={styles.iconWrapper}>
+              <Ionicons name="person-outline" size={16} color="black" style={styles.icon} />
+              <Text style={[styles.paymentText, getTextStyles(CurrentScreenDef.SelectPaymentUser === currentScreen)]}>
+                支払った人*
+              </Text>
+            </View>
             {!!inputState.paymentUser && (
               <TouchableOpacity onPress={onTapPaymentUser}>
                 <ChipLabel label={inputState.paymentUser} color={Colors.Secondary} />
@@ -219,9 +233,12 @@ const AddPaymentScreen: FC = () => {
             )}
           </View>
           <View style={styles.amountArea}>
-            <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.SelectCategory === currentScreen)]}>
-              カテゴリ
-            </Text>
+            <View style={styles.iconWrapper}>
+              <Feather name="folder" size={16} color="black" style={styles.icon} />
+              <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.SelectCategory === currentScreen)]}>
+                カテゴリ
+              </Text>
+            </View>
             <TouchableOpacity onPress={onTapCategoryArea}>
               <Text style={styles.categoryText}>
                 {inputState.category ? inputCategoryToText(inputState.category) : ''}
@@ -229,7 +246,12 @@ const AddPaymentScreen: FC = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.amountArea}>
-            <Text style={[styles.paymentUserText, , getTextStyles(CurrentScreenDef.Memo === currentScreen)]}>メモ</Text>
+            <View style={styles.iconWrapper}>
+              <SimpleLineIcons name="pencil" size={16} color="black" style={styles.icon} />
+              <Text style={[styles.paymentUserText, , getTextStyles(CurrentScreenDef.Memo === currentScreen)]}>
+                メモ
+              </Text>
+            </View>
             <View style={styles.memoArea}>
               <TextInput
                 ref={ref}
@@ -245,9 +267,12 @@ const AddPaymentScreen: FC = () => {
             </View>
           </View>
           <View style={styles.amountArea}>
-            <Text style={[styles.paymentUserText, , getTextStyles(CurrentScreenDef.AddFixedCost === currentScreen)]}>
-              固定費に追加
-            </Text>
+            <View style={styles.iconWrapper}>
+              <Octicons name="graph" size={16} color="black" style={styles.icon} />
+              <Text style={[styles.paymentUserText, , getTextStyles(CurrentScreenDef.AddFixedCost === currentScreen)]}>
+                固定費に追加
+              </Text>
+            </View>
             <TouchableOpacity onPress={onPressAddFixedCost} style={{ height: 24, flexDirection: 'row' }}>
               <Text style={styles.settingText}>{fixedCostTypeToText()}</Text>
               <AntDesign name="right" size={14} color={Colors.Gray8} style={{ top: 2, marginLeft: 10 }} />
