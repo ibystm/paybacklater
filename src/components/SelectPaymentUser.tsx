@@ -64,9 +64,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column',
-    flex: 1,
-    paddingBottom: 64
+    flexDirection: 'column'
   },
   textContainer: { marginBottom: 32 },
   title: { fontSize: 20, lineHeight: 24, fontFamily: 'System', fontWeight: '600', color: Colors.Gray7 },

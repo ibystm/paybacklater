@@ -163,11 +163,10 @@ export default MyKeyboard
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 80
+    paddingBottom: 16
   },
   input: {
     backgroundColor: '#ffffff',

@@ -6,6 +6,7 @@ import { ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native'
 import { TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { Colors } from '../color'
+import BottomFinishButton from '../components/BottomFinishButton'
 import BottomNextButton from '../components/BottomNextButton'
 import CategoryBoard from '../components/CategoryBoard'
 import ChipLabel from '../components/ChipLabel'
@@ -14,6 +15,7 @@ import PButton from '../components/PButton'
 import SelectPaymentUser from '../components/SelectPaymentUser'
 import { Category, inputCategoryToText } from '../types/CategoryTypes'
 import { FixedCostSettings } from '../types/FixedCostSettingTypes'
+import { DISPLAY_WIDTH } from '../utils/utils'
 
 const styles = StyleSheet.create({
   container: { flex: 0.5, backgroundColor: '#fff' },
@@ -107,6 +109,7 @@ const AddPaymentScreen: FC = () => {
   // 入力内容を保持
   const [inputState, setInputState] = useState<InputState>(initialInputState)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [inputDone, setInputDone] = useState<boolean>(false)
   const ref = useRef<TextInput>(null)
 
   const navigation = useNavigation()
@@ -148,10 +151,12 @@ const AddPaymentScreen: FC = () => {
     switch (currentScreen) {
       case CurrentScreenDef.KeyBoard:
         return inputState.amount === '0' || inputState.amount === ''
+      case CurrentScreenDef.SelectPaymentUser:
+        return !inputState.paymentUser
       default:
         return false
     }
-  }, [currentScreen, inputState.amount])
+  }, [currentScreen, inputState.amount, inputState.paymentUser])
 
   const onChangeText = useCallback((text: string) => {
     setInputState((c) => ({
@@ -197,6 +202,16 @@ const AddPaymentScreen: FC = () => {
         new Error('invalid fixedCost type.')
     }
   }, [inputState.fixedCostSetting])
+  const canFinish = useMemo(() => currentScreen !== CurrentScreenDef.KeyBoard, [currentScreen])
+  const OnTapInputDone = useCallback(() => {
+    setInputDone(true)
+  }, [])
+
+  // useEffect(() => {
+  //   if (!!inputState.paymentUser && !!inputState.amount) {
+  //     setInputDone(true)
+  //   }
+  // }, [inputState.paymentUser, inputState.amount])
 
   return fontsLoaded ? (
     <>
@@ -279,13 +294,16 @@ const AddPaymentScreen: FC = () => {
             </TouchableOpacity>
           </View>
         </View>
-        {currentScreen !== CurrentScreenDef.Memo && currentScreen !== CurrentScreenDef.AddFixedCost && (
+        {currentScreen !== CurrentScreenDef.Memo && currentScreen !== CurrentScreenDef.AddFixedCost && !inputDone && (
           <View style={styles.keyboardAreaContainer}>
-            <View>{renderScreen}</View>
-            <BottomNextButton nextScreen={nextPage} disabled={disabled} />
+            <View style={{ paddingVertical: 16 }}>{renderScreen}</View>
+            <View style={{ height: 80, flexDirection: 'row', width: DISPLAY_WIDTH }}>
+              {canFinish && <BottomFinishButton disabled={disabled} onPress={OnTapInputDone} />}
+              <BottomNextButton nextScreen={nextPage} disabled={disabled} canFinish={canFinish} />
+            </View>
           </View>
         )}
-        {currentScreen === CurrentScreenDef.AddFixedCost && (
+        {(currentScreen === CurrentScreenDef.AddFixedCost || inputDone) && (
           <View style={styles.fixedCostArea}>
             <PButton text="保存する" onPress={onSavePayment} buttonColor={Colors.Main} />
           </View>

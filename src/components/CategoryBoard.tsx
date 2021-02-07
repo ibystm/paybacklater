@@ -137,7 +137,7 @@ const CategoryBoard: FC<P> = (props) => {
 export default CategoryBoard
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'column', flex: 1, marginBottom: 80, justifyContent: 'center' },
+  container: { flexDirection: 'column', justifyContent: 'center', paddingBottom: 16 },
   rowBox: { flexDirection: 'row', justifyContent: 'space-between' },
   itemBox: {
     width: 64,

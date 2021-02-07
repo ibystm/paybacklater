@@ -5,17 +5,22 @@ import { Colors } from '../color'
 interface P {
   nextScreen: () => void
   disabled: boolean
+  canFinish: boolean
 }
 
 const getButtonColorStyle = (disabled: boolean): StyleProp<ViewStyle> => ({
   opacity: disabled ? 0.4 : 1
 })
 
+const getWidth = (canFinish: boolean): StyleProp<ViewStyle> => ({
+  width: canFinish ? '50%' : '100%'
+})
+
 const BottomNextButton: FC<P> = (props) => {
-  const { nextScreen, disabled } = props
+  const { nextScreen, disabled, canFinish } = props
   return (
     <TouchableOpacity
-      style={[styles.nextButton, getButtonColorStyle(disabled)]}
+      style={[styles.nextButton, getButtonColorStyle(disabled), getWidth(canFinish)]}
       onPress={nextScreen}
       disabled={disabled}
     >
@@ -23,15 +28,15 @@ const BottomNextButton: FC<P> = (props) => {
     </TouchableOpacity>
   )
 }
-const windowWidth = Dimensions.get('window').width
+const HALF_SCREEN = Dimensions.get('window').width / 2
 
 export default BottomNextButton
 
 const styles = StyleSheet.create({
   nextButton: {
-    width: windowWidth,
-    height: 80,
-    position: 'absolute',
+    // height: 80,
+    height: '100%',
+    // position: 'absolute',
     backgroundColor: Colors.Main,
     justifyContent: 'center'
   },
