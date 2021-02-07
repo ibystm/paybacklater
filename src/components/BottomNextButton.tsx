@@ -1,6 +1,6 @@
-import React, {FC} from 'react'
-import {Dimensions, StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle} from 'react-native'
-import {Colors} from '../color'
+import React, { FC } from 'react'
+import { Dimensions, StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
+import { Colors } from '../color'
 
 interface P {
   nextScreen: () => void
@@ -30,18 +30,16 @@ export default BottomNextButton
 const styles = StyleSheet.create({
   nextButton: {
     width: windowWidth,
-    height: 54,
+    height: 80,
     position: 'absolute',
-    bottom: 0,
     backgroundColor: Colors.Main,
     justifyContent: 'center'
-    // alignItems: 'center'
   },
   nextButtonText: {
     fontWeight: '600',
     fontSize: 18,
     lineHeight: 24,
     textAlign: 'center',
-    color: '#fff'
+    color: Colors.white
   }
 })

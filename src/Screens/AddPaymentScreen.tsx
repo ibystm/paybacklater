@@ -2,7 +2,7 @@ import { Rubik_500Medium, useFonts } from '@expo-google-fonts/rubik'
 import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import React, { FC, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native'
 import { TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { Colors } from '../color'
@@ -33,10 +33,9 @@ const styles = StyleSheet.create({
   paymentUserText: { fontSize: 16, color: Colors.Gray8, fontWeight: 'normal', lineHeight: 24 },
   keyboardAreaContainer: {
     backgroundColor: '#fff',
-    borderBottomWidth: 0,
     width: '100%',
     height: 344, // 高さは固定でもたせるのかはだいぶ悩ましいからFIXME
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingHorizontal: 32,
@@ -193,8 +192,8 @@ const AddPaymentScreen: FC = () => {
 
   return fontsLoaded ? (
     <>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-        <SafeAreaView style={styles.container} />
+      <Spinner visible={isLoading} textContent="保存中" textStyle={{ color: 'white' }} />
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled" scrollEnabled={false}>
         <View style={styles.areaWrapper}>
           <TouchableWithoutFeedback
             style={styles.amountArea}
@@ -257,7 +256,7 @@ const AddPaymentScreen: FC = () => {
         </View>
         {currentScreen !== CurrentScreenDef.Memo && currentScreen !== CurrentScreenDef.AddFixedCost && (
           <View style={styles.keyboardAreaContainer}>
-            {renderScreen}
+            <View>{renderScreen}</View>
             <BottomNextButton nextScreen={nextPage} disabled={disabled} />
           </View>
         )}
@@ -266,7 +265,6 @@ const AddPaymentScreen: FC = () => {
             <PButton text="保存する" onPress={onSavePayment} buttonColor={Colors.Main} />
           </View>
         )}
-        <Spinner visible={isLoading} textContent="保存中" textStyle={{ color: 'white' }} />
       </ScrollView>
     </>
   ) : (
