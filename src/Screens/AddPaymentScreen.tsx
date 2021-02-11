@@ -1,7 +1,7 @@
 import { Rubik_500Medium, useFonts } from '@expo-google-fonts/rubik'
 import { AntDesign, Feather, Ionicons, Octicons, SimpleLineIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import React, { FC, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
+import React, { FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, TextStyle, View } from 'react-native'
 import { TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import Spinner from 'react-native-loading-spinner-overlay'
@@ -102,7 +102,7 @@ const getTextStyles = (isAreaFocused: boolean): TextStyle => {
 }
 
 const AddPaymentScreen: FC = () => {
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Rubik_500Medium
   })
   const [currentScreen, setCurrentScreen] = useState<CurrentScreenDef>(CurrentScreenDef.KeyBoard)
@@ -177,7 +177,7 @@ const AddPaymentScreen: FC = () => {
         selectedSettings: inputState.fixedCostSetting,
         setState: setInputState
       }),
-    []
+    [inputState.fixedCostSetting, navigation]
   )
   const onTapPaymentUser = useCallback(() => setCurrentScreen(CurrentScreenDef.SelectPaymentUser), [])
   const onTapCategoryArea = useCallback(() => setCurrentScreen(CurrentScreenDef.SelectCategory), [])
@@ -187,7 +187,7 @@ const AddPaymentScreen: FC = () => {
       setIsLoading(false)
       navigation.navigate('AppContainer', { isSaveDone: true })
     }, 2000)
-  }, [])
+  }, [navigation])
   const fixedCostTypeToText = useCallback(() => {
     switch (inputState.fixedCostSetting) {
       case 'beginningOfMonth':
@@ -207,11 +207,15 @@ const AddPaymentScreen: FC = () => {
     setInputDone(true)
   }, [])
 
-  // useEffect(() => {
-  //   if (!!inputState.paymentUser && !!inputState.amount) {
-  //     setInputDone(true)
-  //   }
-  // }, [inputState.paymentUser, inputState.amount])
+  const [saveButtonDisabled, setSaveButtonDisabled] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (!inputState.amount || !inputState.paymentUser) {
+      setSaveButtonDisabled(true)
+    } else {
+      setSaveButtonDisabled(false)
+    }
+  }, [inputState.amount, inputState.paymentUser])
 
   return fontsLoaded ? (
     <>
@@ -263,9 +267,7 @@ const AddPaymentScreen: FC = () => {
           <View style={styles.amountArea}>
             <View style={styles.iconWrapper}>
               <SimpleLineIcons name="pencil" size={16} color="black" style={styles.icon} />
-              <Text style={[styles.paymentUserText, , getTextStyles(CurrentScreenDef.Memo === currentScreen)]}>
-                メモ
-              </Text>
+              <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.Memo === currentScreen)]}>メモ</Text>
             </View>
             <View style={styles.memoArea}>
               <TextInput
@@ -284,7 +286,7 @@ const AddPaymentScreen: FC = () => {
           <View style={styles.amountArea}>
             <View style={styles.iconWrapper}>
               <Octicons name="graph" size={16} color="black" style={styles.icon} />
-              <Text style={[styles.paymentUserText, , getTextStyles(CurrentScreenDef.AddFixedCost === currentScreen)]}>
+              <Text style={[styles.paymentUserText, getTextStyles(CurrentScreenDef.AddFixedCost === currentScreen)]}>
                 固定費に追加
               </Text>
             </View>
@@ -305,7 +307,7 @@ const AddPaymentScreen: FC = () => {
         )}
         {(currentScreen === CurrentScreenDef.AddFixedCost || inputDone) && (
           <View style={styles.fixedCostArea}>
-            <PButton text="保存する" onPress={onSavePayment} buttonColor={Colors.Main} />
+            <PButton text="保存する" onPress={onSavePayment} buttonColor={Colors.Main} disabled={saveButtonDisabled} />
           </View>
         )}
       </ScrollView>

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { FC } from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { Colors } from '../color'
@@ -9,17 +10,30 @@ type P = {
   active?: boolean // TODO 一旦非活性にしておく。
   width?: string
   height?: string
+  disabled?: boolean
 }
 
-const PButton: FC<P> = ({ onPress, buttonColor, text }) => {
+const PButton: FC<P> = (props) => {
+  const { onPress, buttonColor, text, disabled } = props
   return (
-    <TouchableOpacity style={{ ...styles.buttonBlue, backgroundColor: buttonColor }} onPress={onPress}>
+    <TouchableOpacity
+      style={{ ...styles.buttonBlue, backgroundColor: buttonColor }}
+      onPress={onPress}
+      disabled={disabled}
+    >
       <Text style={styles.buttonText}>{text}</Text>
     </TouchableOpacity>
   )
 }
 
 export default PButton
+
+PButton.propTypes = {
+  onPress: PropTypes.func.isRequired,
+  buttonColor: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  disabled: PropTypes.bool
+}
 
 const styles = StyleSheet.create({
   container: {
