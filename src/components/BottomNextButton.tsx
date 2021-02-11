@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Dimensions, StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
+import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native'
 import { Colors } from '../color'
 
 interface P {
@@ -28,7 +28,6 @@ const BottomNextButton: FC<P> = (props) => {
     </TouchableOpacity>
   )
 }
-const HALF_SCREEN = Dimensions.get('window').width / 2
 
 export default BottomNextButton
 

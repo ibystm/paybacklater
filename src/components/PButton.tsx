@@ -17,7 +17,7 @@ const PButton: FC<P> = (props) => {
   const { onPress, buttonColor, text, disabled } = props
   return (
     <TouchableOpacity
-      style={{ ...styles.buttonBlue, backgroundColor: buttonColor }}
+      style={{ ...styles.buttonBlue, backgroundColor: buttonColor, opacity: disabled ? 0.4 : 1 }}
       onPress={onPress}
       disabled={disabled}
     >
