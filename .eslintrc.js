@@ -7,7 +7,9 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
-    'plugin:@typescript-eslint/recommended'
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+    'prettier/@typescript-eslint' // こいつを一番うしろに書いてあげないとちゃんとoverrrideできないから注意
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -24,6 +26,6 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
-    'react/prop-types': 0 // propsのvalidationをしていないことを起こってくれる
+    'react/prop-types': 0 // propsのvalidationをしていないことを起こってくれるTSなのでがOFF
   }
 }

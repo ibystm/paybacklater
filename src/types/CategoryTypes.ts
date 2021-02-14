@@ -2,14 +2,14 @@ export type Category =
   | 'food' // 食費
   | 'living' //生活用品
   | 'transportation' // 交通費
-  | 'furnitureAndAppliances' //　家具家電
-  | 'utility' //　光熱費
+  | 'furnitureAndAppliances' // 家具家電
+  | 'utility' // 光熱費
   | 'hobbyAndCulture' //趣味教養
   | 'leisure' // レジャー
   | 'rent' // 家賃
-  | 'communication' //　通信費
+  | 'communication' // 通信費
 
-export const inputCategoryToText = (category: Category) => {
+export const inputCategoryToText = (category: Category): string => {
   switch (category) {
     case 'communication':
       return '通信費'
