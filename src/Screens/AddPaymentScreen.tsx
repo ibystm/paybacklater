@@ -13,63 +13,10 @@ import ChipLabel from '../components/ChipLabel'
 import MyKeyboard from '../components/icons/KeyboardPads'
 import PButton from '../components/PButton'
 import SelectPaymentUser from '../components/SelectPaymentUser'
+import { PaymentService } from '../services/paymentsService'
 import { Category, inputCategoryToText } from '../types/CategoryTypes'
 import { FixedCostSettings } from '../types/FixedCostSettingTypes'
 import { DISPLAY_WIDTH } from '../utils/utils'
-
-const styles = StyleSheet.create({
-  container: { flex: 0.5, backgroundColor: '#fff' },
-  areaWrapper: { flex: 4, paddingTop: 24, paddingHorizontal: 32, backgroundColor: '#fff' },
-  upperArea: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 24
-  },
-  addText: { alignItems: 'center', color: Colors.Main, fontSize: 16, fontWeight: 'bold' },
-  closeButton: { height: 24 },
-  amountArea: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-    height: 32,
-    alignItems: 'center'
-  },
-  icon: { paddingRight: 8 },
-  iconWrapper: { flexDirection: 'row', alignItems: 'center' },
-  paymentText: { fontSize: 16, fontWeight: '600', color: Colors.Gray8, lineHeight: 24 },
-  requiredText: { fontWeight: '600' },
-  paymentNumber: { color: Colors.Gray8, fontSize: 24, lineHeight: 32, fontFamily: 'Rubik_500Medium', paddingRight: 8 },
-  categoryText: { fontSize: 16, fontFamily: 'System' },
-  paymentUserText: { fontSize: 16, color: Colors.Gray8, fontWeight: 'normal', lineHeight: 24 },
-  keyboardAreaContainer: {
-    backgroundColor: '#fff',
-    width: '100%',
-    height: 344, // 高さは固定でもたせるのかはだいぶ悩ましいからFIXME
-    justifyContent: 'flex-end',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingHorizontal: 32,
-    paddingTop: 16,
-    shadowRadius: 10,
-    shadowOffset: {
-      width: 0,
-      height: -10
-    },
-    shadowColor: '#000000',
-    shadowOpacity: 0.1,
-    alignItems: 'center'
-  },
-  fixedCostArea: {
-    flex: 3,
-    backgroundColor: '#fff',
-    borderBottomWidth: 0,
-    width: '100%',
-    height: '100%',
-    alignItems: 'center'
-  },
-  settingText: { color: Colors.Gray8, fontFamily: 'System', fontSize: 16 },
-  memoArea: { borderBottomColor: Colors.Gray8, borderBottomWidth: 1, width: 160, marginBottom: 16, height: 24 }
-})
 
 export enum CurrentScreenDef {
   KeyBoard = 'KeyBoard',
@@ -111,9 +58,7 @@ const AddPaymentScreen: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [inputDone, setInputDone] = useState<boolean>(false)
   const ref = useRef<TextInput>(null)
-
   const navigation = useNavigation()
-
   const renderScreen: ReactNode = useMemo(() => {
     switch (currentScreen) {
       case CurrentScreenDef.KeyBoard:
@@ -129,7 +74,7 @@ const AddPaymentScreen: FC = () => {
     }
   }, [currentScreen, inputState])
 
-  const nextPage = useCallback(() => {
+  const goNextPage = useCallback(() => {
     switch (currentScreen) {
       case CurrentScreenDef.KeyBoard:
         return setCurrentScreen(CurrentScreenDef.SelectPaymentUser)
@@ -181,13 +126,19 @@ const AddPaymentScreen: FC = () => {
   )
   const onTapPaymentUser = useCallback(() => setCurrentScreen(CurrentScreenDef.SelectPaymentUser), [])
   const onTapCategoryArea = useCallback(() => setCurrentScreen(CurrentScreenDef.SelectCategory), [])
-  const onSavePayment = useCallback(() => {
+  const onSavePayment = useCallback(async () => {
     setIsLoading(true)
-    setTimeout(() => {
-      setIsLoading(false)
-      navigation.navigate('AppContainer', { isSaveDone: true })
-    }, 2000)
-  }, [navigation])
+    await PaymentService.postPayments(inputState)
+      .then(() => {
+        navigation.navigate('AppContainer', { isSaveDone: true })
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+    // setTimeout(() => {
+
+    // }, 2000)
+  }, [inputState, navigation])
   const fixedCostTypeToText = useCallback(() => {
     switch (inputState.fixedCostSetting) {
       case 'beginningOfMonth':
@@ -232,7 +183,7 @@ const AddPaymentScreen: FC = () => {
             </View>
             <TextInput
               value={inputState.amount}
-              onChangeText={() => {}}
+              // onChangeText={() => {}}
               showSoftInputOnFocus={false} // keyboardをoffるprops
               editable={false} // keyboardをoffるprops
               style={styles.paymentNumber}
@@ -301,7 +252,7 @@ const AddPaymentScreen: FC = () => {
             <View style={{ paddingVertical: 16 }}>{renderScreen}</View>
             <View style={{ height: 80, flexDirection: 'row', width: DISPLAY_WIDTH }}>
               {canFinish && <BottomFinishButton disabled={disabled} onPress={OnTapInputDone} />}
-              <BottomNextButton nextScreen={nextPage} disabled={disabled} canFinish={canFinish} />
+              <BottomNextButton goNextScreen={goNextPage} disabled={disabled} canFinish={canFinish} />
             </View>
           </View>
         )}
@@ -316,5 +267,58 @@ const AddPaymentScreen: FC = () => {
     <></>
   )
 }
-
 export default AddPaymentScreen
+
+const styles = StyleSheet.create({
+  container: { flex: 0.5, backgroundColor: '#fff' },
+  areaWrapper: { flex: 4, paddingTop: 24, paddingHorizontal: 32, backgroundColor: '#fff' },
+  upperArea: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 24
+  },
+  addText: { alignItems: 'center', color: Colors.Main, fontSize: 16, fontWeight: 'bold' },
+  closeButton: { height: 24 },
+  amountArea: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+    height: 32,
+    alignItems: 'center'
+  },
+  icon: { paddingRight: 8 },
+  iconWrapper: { flexDirection: 'row', alignItems: 'center' },
+  paymentText: { fontSize: 16, fontWeight: '600', color: Colors.Gray8, lineHeight: 24 },
+  requiredText: { fontWeight: '600' },
+  paymentNumber: { color: Colors.Gray8, fontSize: 24, lineHeight: 32, fontFamily: 'Rubik_500Medium', paddingRight: 8 },
+  categoryText: { fontSize: 16, fontFamily: 'System' },
+  paymentUserText: { fontSize: 16, color: Colors.Gray8, fontWeight: 'normal', lineHeight: 24 },
+  keyboardAreaContainer: {
+    backgroundColor: '#fff',
+    width: '100%',
+    height: 344, // 高さは固定でもたせるのかはだいぶ悩ましいからFIXME
+    justifyContent: 'flex-end',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingHorizontal: 32,
+    paddingTop: 16,
+    shadowRadius: 10,
+    shadowOffset: {
+      width: 0,
+      height: -10
+    },
+    shadowColor: '#000000',
+    shadowOpacity: 0.1,
+    alignItems: 'center'
+  },
+  fixedCostArea: {
+    flex: 3,
+    backgroundColor: '#fff',
+    borderBottomWidth: 0,
+    width: '100%',
+    height: '100%',
+    alignItems: 'center'
+  },
+  settingText: { color: Colors.Gray8, fontFamily: 'System', fontSize: 16 },
+  memoArea: { borderBottomColor: Colors.Gray8, borderBottomWidth: 1, width: 160, marginBottom: 16, height: 24 }
+})

@@ -6,6 +6,7 @@ import Modal from 'react-native-modal'
 import SwitchSelector from 'react-native-switch-selector'
 import { Colors } from '../color'
 import PayOffButton from '../components/icons/PayOffButton'
+import { UsersService } from '../services/usersService'
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 16, backgroundColor: '#ffff' },
@@ -58,12 +59,11 @@ type P = {
 
 const Home: FC<P> = (props) => {
   const { saveDone } = props
-  console.log('################isSaveDone', saveDone)
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     NunitoSans_900Black_Italic,
     Rubik_500Medium
   })
-  const [isLoading, setIsLoading] = useState<Boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [activeUser, setActiveUser] = useState<boolean>(true)
   const [user, setUser] = useState<any>()
   const switchOptions = useMemo(
@@ -77,9 +77,10 @@ const Home: FC<P> = (props) => {
   const [paymentComplete, setPaymentComplete] = useState<boolean>(!!saveDone)
 
   useEffect(() => {
-    // UsersService.getUsersTotalDebts('Oe6XKXl31y9TFvMdMADo').then((res) => {
-    //   setUser(res)
-    // })
+    UsersService.getUsersTotalDebts('Oe6XKXl31y9TFvMdMADo').then((res) => {
+      console.log('res', res)
+      setUser(res)
+    })
   }, [])
 
   const onTapPaymentDone = useCallback(() => setPaymentComplete(false), [])

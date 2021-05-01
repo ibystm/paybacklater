@@ -1,8 +1,10 @@
 import axios from '../api/api'
+
+const BASE_PATH = '/api-v1-users'
 export class UsersService {
   public static async getUsersTotalDebts(usersId: string): Promise<any> {
     return axios
-      .get(`/api-v1-users/${usersId}/total_debts`)
+      .get(`${BASE_PATH}/${usersId}/total_debts`)
       .then((res) => {
         return res.data.user
       })

@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-
 import { Colors } from '../color'
 
 interface P {
-  nextScreen: () => void
+  goNextScreen: () => void
   disabled: boolean
   canFinish: boolean
 }
@@ -17,11 +17,11 @@ const getWidth = (canFinish: boolean): StyleProp<ViewStyle> => ({
 })
 
 const BottomNextButton: FC<P> = (props) => {
-  const { nextScreen, disabled, canFinish } = props
+  const { goNextScreen, disabled, canFinish } = props
   return (
     <TouchableOpacity
       style={[styles.nextButton, getButtonColorStyle(disabled), getWidth(canFinish)]}
-      onPress={nextScreen}
+      onPress={goNextScreen}
       disabled={disabled}
     >
       <Text style={styles.nextButtonText}>次へ</Text>
