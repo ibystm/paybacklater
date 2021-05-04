@@ -9,13 +9,17 @@ import React, { Dispatch, SetStateAction } from 'react'
 import { Animated, StyleSheet, TouchableOpacity } from 'react-native'
 import { Colors } from '../../color'
 import CloseButtonIcon from '../../components/icons/CloseButtonIcon'
+import { useAppSelector } from '../../redux/index'
+import { selectLogin } from '../../redux/user'
 import { FixedCostSettings } from '../../types/FixedCostSettingTypes'
 import AddPaymentScreen, { InputState } from '../AddPaymentScreen'
 import FixedCostScreen from '../FixedCostScreen'
+import OnBoardingScreen from '../setUps/onBoardings/OnBoardingScreen'
 import AppContainer from './AppContainer'
 
 type RootStackParamList = {
   AppContainer: undefined
+  AppSetUpContainer: undefined
   AddPaymentScreen: undefined
   FixedCostScreen: { selectedSettings: FixedCostSettings; setState: Dispatch<SetStateAction<InputState>> }
 }
@@ -28,11 +32,12 @@ export type FixedCostScreenNavigationProps = StackNavigationProp<RootStackParamL
 
 const RootStacks = () => {
   const Stack = createStackNavigator<RootStackParamList>()
-  // TODO userの存在チェックをかける
-  const user = true
+  // TODO isLoggedInの存在チェックをかける
+  const isLoggedIn = useAppSelector(selectLogin)
+
   return (
     <Stack.Navigator mode="modal" screenOptions={{ animationEnabled: false }} headerMode="screen">
-      {user ? (
+      {isLoggedIn ? (
         <Stack.Screen
           name="AppContainer"
           component={AppContainer}
@@ -41,7 +46,13 @@ const RootStacks = () => {
           }}
         />
       ) : (
-        <></>
+        <Stack.Screen
+          name="AppSetUpContainer"
+          component={OnBoardingScreen}
+          options={{
+            headerShown: false
+          }}
+        />
       )}
       <Stack.Screen
         name="AddPaymentScreen"
@@ -49,11 +60,13 @@ const RootStacks = () => {
         options={({ navigation }) => ({
           title: '追加',
           animationEnabled: true,
-          headerRight: () => (
-            <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>
-              <CloseButtonIcon />
-            </TouchableOpacity>
-          ),
+          headerRight: function hdaderRight() {
+            return (
+              <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>
+                <CloseButtonIcon />
+              </TouchableOpacity>
+            )
+          },
           headerStyle: {
             shadowColor: 'transparent'
           },
