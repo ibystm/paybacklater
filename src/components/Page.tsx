@@ -4,16 +4,15 @@ import { Colors } from '../color'
 
 type P = {
   image: JSX.Element
+  index: number
   title?: string
   subTitle?: string
-  containerStyles?: any // 一旦
   width: number
   height: number
 }
 
 const Page: React.VFC<P> = (props) => {
-  const { image, title, containerStyles, subTitle, width, height } = props
-  console.log('titleElement', subTitle)
+  const { image, index, title, subTitle, width, height } = props
   const titleElement = () => {
     if (title) {
       return (
@@ -36,8 +35,15 @@ const Page: React.VFC<P> = (props) => {
   }
 
   return (
-    <View style={[styles.container, { width, height }]}>
-      <View style={{ alignItems: 'center', width: 320 }}>{image}</View>
+    <View style={[styles.container, { width }]}>
+      <View
+        style={{
+          alignItems: 'center',
+          paddingLeft: index === 0 || index === 3 ? '10%' : undefined
+        }}
+      >
+        {image}
+      </View>
       {titleElement()}
       {subTitleElement()}
     </View>
@@ -48,17 +54,12 @@ export default React.memo(Page)
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 10
-    // backgroundColor: 'red'
+    alignItems: 'center'
   },
   title: {
     marginTop: 18,
     textAlign: 'center',
-    // width: ,
     height: 32
   },
   TitleText: {
@@ -74,7 +75,6 @@ const styles = StyleSheet.create({
   },
   subTitleText: {
     fontWeight: '500',
-    // fontFamily: ''
     fontSize: 24,
     lineHeight: 32,
     textAlign: 'center',

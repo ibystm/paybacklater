@@ -1,11 +1,12 @@
 import { NunitoSans_900Black_Italic, useFonts } from '@expo-google-fonts/nunito-sans'
 import { Rubik_500Medium } from '@expo-google-fonts/rubik'
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import SwitchSelector from 'react-native-switch-selector'
 import { Colors } from '../color'
 import PayOffButton from '../components/icons/PayOffButton'
+import { FirestoreUsersTypes } from '../db/firestoreTypes/firestoreUsersTypes'
 import { UsersService } from '../services/usersService'
 
 const styles = StyleSheet.create({
@@ -57,15 +58,15 @@ type P = {
   saveDone?: boolean
 }
 
-const Home: FC<P> = (props) => {
+const Home: React.VFC<P> = (props) => {
   const { saveDone } = props
   const [fontsLoaded] = useFonts({
     NunitoSans_900Black_Italic,
     Rubik_500Medium
   })
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [activeUser, setActiveUser] = useState<boolean>(true)
-  const [user, setUser] = useState<any>()
+  const [loginUser, setloginUser] = useState<boolean>(true)
+  const [user, setUser] = useState<FirestoreUsersTypes>()
   const switchOptions = useMemo(
     () => [
       { label: 'ごま', value: 'f' },
@@ -82,7 +83,6 @@ const Home: FC<P> = (props) => {
       setUser(res)
     })
   }, [])
-
   const onTapPaymentDone = useCallback(() => setPaymentComplete(false), [])
 
   return fontsLoaded && isLoading ? (
@@ -96,7 +96,7 @@ const Home: FC<P> = (props) => {
             style={{ width: 160 }}
             initial={0}
             onPress={() => {
-              setActiveUser(!activeUser)
+              setloginUser(!loginUser)
             }}
             textColor={Colors.Secondary}
             selectedColor="#fff"
@@ -115,10 +115,10 @@ const Home: FC<P> = (props) => {
           <Text style={styles.previousPaymentComplete}>前回の精算</Text>
           <Text style={styles.previousPaymentComplete}>2020/11/04</Text>
         </View>
-        <Text style={styles.totalAmount}>{activeUser ? user?.name : 'やすこ'}さんに払う金額</Text>
+        <Text style={styles.totalAmount}>{loginUser ? user?.totalDebts : 'やすこ'}さんに払う金額</Text>
         <View style={styles.paymentCompleteAttribute}>
           <Text style={styles.totalAmountNumber}>¥</Text>
-          <Text style={styles.totalAmountNumber}>{activeUser ? 6000 : 2000}</Text>
+          <Text style={styles.totalAmountNumber}>{loginUser ? user?.totalDebts : 2000}</Text>
         </View>
       </View>
       <TouchableOpacity style={styles.payOffButton}>
