@@ -8,7 +8,7 @@ export enum Colors {
   Gray3 = '#DEDEDE',
   Gray4 = '#000000',
   Gray5 = '#AFAFAF',
-  Gray6 = '',
+  Gray6 = '#9D9D9D',
   Gray7 = '#7D7D7D',
   Gray8 = '#636060'
 }
