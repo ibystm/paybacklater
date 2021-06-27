@@ -80,8 +80,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.Gray8
   }
-  // imageContainer: {
-  //   top: 112,
-  //   position: 'absolute'
-  // }
 })

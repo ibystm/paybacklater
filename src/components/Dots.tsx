@@ -12,7 +12,6 @@ const Dots: React.VFC<P> = (props) => {
   return (
     <View style={styles.container}>
       {[...Array(numPages)].map((_, index) => {
-        console.log('@@@@indexは?', index)
         return <Dot key={index} isActive={index === currentPage} />
       })}
     </View>
