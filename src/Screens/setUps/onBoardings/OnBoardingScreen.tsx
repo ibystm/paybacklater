@@ -19,7 +19,6 @@ const OnBoardingScreen: React.FC = () => {
   })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [fadeAnimation, setFadeAnimation] = useState<Animated.Value>(new Animated.Value(0))
-  // needs to set outside of render()
   const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 95 })
   const keyExtractor = (_item: PageType, index: number) => index.toString()
   const pages: PageType[] = useMemo(
