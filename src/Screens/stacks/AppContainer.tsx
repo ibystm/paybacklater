@@ -22,7 +22,7 @@ const dummyComponent = () => null
 
 const Tab = createBottomTabNavigator()
 
-const AppContainer = (props: HomeTabProps) => {
+const AppContainer = (props: HomeTabProps): React.ReactElement => {
   const isSaveDone = !!props.route.params && !!props.route.params.isSaveDone
   const renderHome = useCallback(() => <Home saveDone={isSaveDone} />, [isSaveDone])
   return (
@@ -38,7 +38,11 @@ const AppContainer = (props: HomeTabProps) => {
         component={renderHome}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color }) => <AntDesign name="home" size={28} color={color} />
+          tabBarIcon: ({ color }) =>
+            // 名前の無いコンポーネントはeslintで怒られるので、function comopnentで名前を定義
+            function Home() {
+              return <AntDesign name="home" size={28} color={color} />
+            }
         }}
       />
       <Tab.Screen
@@ -46,7 +50,10 @@ const AppContainer = (props: HomeTabProps) => {
         component={History}
         options={{
           tabBarLabel: '履歴',
-          tabBarIcon: ({ color }) => <Feather name="book-open" size={28} color={color} />
+          tabBarIcon: ({ color }) =>
+            function History() {
+              return <Feather name="book-open" size={28} color={color} />
+            }
         }}
       />
       <Tab.Screen
@@ -54,7 +61,10 @@ const AppContainer = (props: HomeTabProps) => {
         component={dummyComponent}
         options={{
           tabBarLabel: '追加',
-          tabBarIcon: ({ color }) => <AntDesign name="pluscircleo" size={28} color={color} />
+          tabBarIcon: ({ color }) =>
+            function Add() {
+              return <AntDesign name="pluscircleo" size={28} color={color} />
+            }
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
@@ -68,7 +78,10 @@ const AppContainer = (props: HomeTabProps) => {
         component={Notification}
         options={{
           tabBarLabel: '通知',
-          tabBarIcon: ({ color }) => <Feather name="bell" size={28} color={color} />
+          tabBarIcon: ({ color }) =>
+            function Notification() {
+              return <Feather name="bell" size={28} color={color} />
+            }
         }}
       />
       <Tab.Screen
@@ -76,7 +89,10 @@ const AppContainer = (props: HomeTabProps) => {
         component={MyPage}
         options={{
           tabBarLabel: 'マイページ',
-          tabBarIcon: ({ color }) => <Ionicons name="person-outline" size={28} color={color} />
+          tabBarIcon: ({ color }) =>
+            function MyPage() {
+              return <Ionicons name="person-outline" size={28} color={color} />
+            }
         }}
       />
     </Tab.Navigator>
