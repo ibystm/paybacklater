@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Animated, Dimensions, FlatList, Image, StyleSheet, Text, View, ViewToken } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -13,6 +14,7 @@ type PageType = {
 }
 
 const OnBoardingScreen: React.FC = () => {
+  const navigation = useNavigation()
   const [pageData, setPageData] = useState({
     previousPage: 0,
     currentPage: 0
@@ -79,6 +81,9 @@ const OnBoardingScreen: React.FC = () => {
       currentPage: viewableItems[0].index!
     }))
   })
+  const goToNext = (): void => {
+    navigation.navigate('LoginInputScreen')
+  }
 
   useEffect(() => {
     const fadeIn = () => {
@@ -124,12 +129,12 @@ const OnBoardingScreen: React.FC = () => {
             opacity: fadeAnimation
           }}
         >
-          <TouchableOpacity style={{}}>
+          <TouchableOpacity>
             <StartButton />
           </TouchableOpacity>
         </Animated.View>
         <View style={{ height: 8 }} />
-        <TouchableOpacity style={[styles.buttonBase, styles.loginButton]}>
+        <TouchableOpacity style={[styles.buttonBase, styles.loginButton]} onPress={goToNext}>
           <Text style={[styles.startButtonTextBase, styles.loginButtonText]}>ログインする</Text>
         </TouchableOpacity>
       </View>

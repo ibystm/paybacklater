@@ -14,14 +14,16 @@ import { selectLogin } from '../../redux/user'
 import { FixedCostSettings } from '../../types/FixedCostSettingTypes'
 import AddPaymentScreen, { InputState } from '../AddPaymentScreen'
 import FixedCostScreen from '../FixedCostScreen'
+import LoginInputScreen from '../setUps/onBoardings/LoginInputScreen'
 import OnBoardingScreen from '../setUps/onBoardings/OnBoardingScreen'
 import AppContainer from './AppContainer'
 
 type RootStackParamList = {
   AppContainer: undefined
-  AppSetUpContainer: undefined
+  OnBoardingScreen: undefined
   AddPaymentScreen: undefined
   FixedCostScreen: { selectedSettings: FixedCostSettings; setState: Dispatch<SetStateAction<InputState>> }
+  LoginInputScreen: undefined
 }
 
 export type AddPaymentScreenRouteProps = RouteProp<RootStackParamList, 'AddPaymentScreen'>
@@ -47,7 +49,7 @@ const RootStacks = () => {
         />
       ) : (
         <Stack.Screen
-          name="AppSetUpContainer"
+          name="OnBoardingScreen"
           component={OnBoardingScreen}
           options={{
             headerShown: false
@@ -82,7 +84,7 @@ const RootStacks = () => {
           title: '固定費',
           headerShown: true,
           headerStyle: {
-            shadowColor: 'transparent'
+            shadowColor: 'transparent' // ヘッダーの下ボーダーを取り除く
           },
           headerTintColor: Colors.Main,
           headerLeftContainerStyle: {
@@ -92,6 +94,18 @@ const RootStacks = () => {
           animationEnabled: true,
           gestureDirection: 'horizontal',
           cardStyleInterpolator: forHorizontalModal
+        }}
+      />
+      <Stack.Screen
+        name="LoginInputScreen"
+        component={LoginInputScreen}
+        options={{
+          animationEnabled: true,
+          headerStyle: { backgroundColor: '#fff', shadowColor: 'transparent' },
+          gestureDirection: 'horizontal',
+          cardStyleInterpolator: forHorizontalModal,
+          title: 'ログイン',
+          headerBackTitle: '戻る'
         }}
       />
     </Stack.Navigator>
